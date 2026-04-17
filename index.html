@@ -1819,33 +1819,36 @@
     </div>
     <div class="modal-divider"></div>
     <div class="modal-form-body" id="applyFormBody">
+      <form id="applyForm">
+      <input type="hidden" name="_subject" value="LARA Membership Application" />
+      <input type="hidden" name="_replyto" value="" />
       <div class="form-row-half">
         <div class="form-row">
           <label>First Name</label>
-          <input type="text" placeholder="John" />
+          <input type="text" name="first_name" placeholder="John" />
         </div>
         <div class="form-row">
           <label>Last Name</label>
-          <input type="text" placeholder="Smith" />
+          <input type="text" name="last_name" placeholder="Smith" />
         </div>
       </div>
       <div class="form-row">
         <label>Email Address</label>
-        <input type="email" placeholder="you@email.com" />
+        <input type="email" name="email" placeholder="you@email.com" />
       </div>
       <div class="form-row">
         <label>Phone Number</label>
-        <input type="tel" placeholder="(407) 555-0100" />
+        <input type="tel" name="phone" placeholder="(407) 555-0100" />
       </div>
       <div class="form-row-half">
         <div class="form-row">
           <label>Callsign <span style="font-weight:300;text-transform:none;letter-spacing:0">(if licensed)</span></label>
-          <input type="text" placeholder="W4XYZ" />
+          <input type="text" name="callsign" placeholder="W4XYZ" />
           <div class="form-hint">Leave blank if not yet licensed</div>
         </div>
         <div class="form-row">
           <label>License Class</label>
-          <select>
+          <select name="license_class">
             <option value="">Select one</option>
             <option>Not yet licensed</option>
             <option>Technician</option>
@@ -1856,14 +1859,14 @@
       </div>
       <div class="form-row">
         <label>Membership Type</label>
-        <select id="applyMemberType" onchange="updateTierBadge(this.value)">
-          <option value="annual">Annual — $75/year</option>
-          <option value="life">Life Member — $800 one-time</option>
+        <select name="membership_type" id="applyMemberType" onchange="updateTierBadge(this.value)">
+          <option value="Annual — $75/year">Annual — $75/year</option>
+          <option value="Life Member — $800 one-time">Life Member — $800 one-time</option>
         </select>
       </div>
       <div class="form-row">
         <label>How did you hear about LARA?</label>
-        <select>
+        <select name="referral_source">
           <option value="">Select one</option>
           <option>Friend or fellow ham</option>
           <option>ARRL / club directory</option>
@@ -1875,9 +1878,10 @@
       </div>
       <div class="form-row">
         <label>Anything you'd like us to know?</label>
-        <textarea placeholder="Interests, experience, questions…"></textarea>
+        <textarea name="message" placeholder="Interests, experience, questions…"></textarea>
       </div>
-      <button class="modal-submit" onclick="submitForm('applyFormBody', 'applySuccess')">Submit Application →</button>
+      <button class="modal-submit" onclick="submitToFormspree('applyForm', 'applyFormBody', 'applySuccess')">Submit Application →</button>
+      </form>
     </div>
     <div class="modal-success" id="applySuccess">
       <div class="success-icon">📡</div>
@@ -1895,34 +1899,36 @@
     <div class="modal-title">Pay Your Dues</div>
     <div class="modal-divider"></div>
     <div class="modal-form-body" id="duesFormBody">
+      <form id="duesForm">
+      <input type="hidden" name="_subject" value="LARA Dues Payment Request" />
       <div class="form-row-half">
         <div class="form-row">
           <label>First Name</label>
-          <input type="text" placeholder="John" />
+          <input type="text" name="first_name" placeholder="John" />
         </div>
         <div class="form-row">
           <label>Last Name</label>
-          <input type="text" placeholder="Smith" />
+          <input type="text" name="last_name" placeholder="Smith" />
         </div>
       </div>
       <div class="form-row">
         <label>Callsign</label>
-        <input type="text" placeholder="W4XYZ" />
+        <input type="text" name="callsign" placeholder="W4XYZ" />
       </div>
       <div class="form-row">
         <label>Email Address</label>
-        <input type="email" placeholder="you@email.com" />
+        <input type="email" name="email" placeholder="you@email.com" />
       </div>
       <div class="form-row">
         <label>Membership Type</label>
-        <select>
-          <option value="annual">Annual Renewal — $75</option>
-          <option value="life">Upgrade to Life Member — $800</option>
+        <select name="membership_type">
+          <option value="Annual Renewal — $75">Annual Renewal — $75</option>
+          <option value="Upgrade to Life Member — $800">Upgrade to Life Member — $800</option>
         </select>
       </div>
       <div class="form-row">
         <label>Payment Method</label>
-        <select>
+        <select name="payment_method">
           <option>Pay at next meeting (cash or check)</option>
           <option>PayPal / Venmo (instructions will be emailed)</option>
           <option>Mail a check</option>
@@ -1930,9 +1936,10 @@
       </div>
       <div class="form-row">
         <label>Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label>
-        <textarea placeholder="Any questions or comments for the treasurer…"></textarea>
+        <textarea name="message" placeholder="Any questions or comments for the treasurer…"></textarea>
       </div>
-      <button class="modal-submit" onclick="submitForm('duesFormBody', 'duesSuccess')">Submit →</button>
+      <button class="modal-submit" onclick="submitToFormspree('duesForm', 'duesFormBody', 'duesSuccess')">Submit →</button>
+      </form>
     </div>
     <div class="modal-success" id="duesSuccess">
       <div class="success-icon">✅</div>
@@ -2014,7 +2021,45 @@
     }
   }
 
-  // Form submit → show success
+  // Form submit → Formspree
+  async function submitToFormspree(formId, bodyId, successId) {
+    var form = document.getElementById(formId);
+    var btn = form.querySelector('.modal-submit');
+    var originalText = btn.textContent;
+
+    // Basic validation — check required fields
+    var email = form.querySelector('input[type="email"]');
+    if (email && !email.value.trim()) {
+      email.style.borderColor = 'var(--red)';
+      email.focus();
+      return;
+    }
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      var data = new FormData(form);
+      var res = await fetch('https://formspree.io/f/xvzdavqw', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        document.getElementById(bodyId).style.display = 'none';
+        document.getElementById(successId).classList.add('show');
+      } else {
+        btn.textContent = 'Error — try again';
+        btn.disabled = false;
+      }
+    } catch(err) {
+      btn.textContent = 'Error — try again';
+      btn.disabled = false;
+    }
+  }
+
+  // Legacy fallback (kept for safety)
   function submitForm(formId, successId) {
     document.getElementById(formId).style.display = 'none';
     document.getElementById(successId).classList.add('show');
