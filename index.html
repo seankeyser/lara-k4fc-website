@@ -18,18 +18,18 @@
     --green:   #2db37a;
     --red:     #d94f3d;
   }
- 
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   html { scroll-behavior: smooth; }
- 
+
   body {
     font-family: 'Source Serif 4', Georgia, serif;
     background: var(--navy);
     color: var(--offwhite);
     overflow-x: hidden;
   }
- 
+
   /* ── SCANLINE TEXTURE OVERLAY ── */
   body::before {
     content:'';
@@ -44,7 +44,7 @@
     pointer-events:none;
     z-index:1000;
   }
- 
+
   /* ── TOP BAR ── */
   .topbar {
     background: #06101e;
@@ -67,7 +67,7 @@
   @keyframes pulse {
     0%,100%{ opacity:1; } 50%{ opacity:.3; }
   }
- 
+
   /* ── NAV ── */
   nav {
     background: var(--navy);
@@ -104,7 +104,7 @@
     font-size:.92rem; color:var(--gold); letter-spacing:.14em;
     margin-top:5px;
   }
- 
+
   .nav-links {
     display:flex; gap:4px; list-style:none; align-items:center;
   }
@@ -146,7 +146,7 @@
     box-shadow: 0 4px 18px rgba(201,168,76,.35) !important;
   }
   .nav-cta.active { background: var(--gold2) !important; }
- 
+
   /* ── HERO ── */
   .hero {
     position:relative;
@@ -187,7 +187,7 @@
     0%   { transform:scale(.1); opacity:.5; }
     100% { transform:scale(1);  opacity:0; }
   }
- 
+
   .hero-grid-lines {
     position:absolute; inset:0;
     background-image:
@@ -195,7 +195,7 @@
       linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
     background-size: 60px 60px;
   }
- 
+
   .hero-content {
     position:relative; z-index:2;
     padding: 0 60px 80px;
@@ -206,7 +206,7 @@
     from { opacity:0; transform:translateY(30px); }
     to   { opacity:1; transform:translateY(0); }
   }
- 
+
   .hero-logo {
     width: 130px;
     height: 130px;
@@ -217,7 +217,7 @@
     display: block;
     animation: fadeUp .7s ease both;
   }
- 
+
   .hero-eyebrow {
     font-family:'Share Tech Mono', monospace;
     font-size:.72rem; letter-spacing:.18em;
@@ -230,7 +230,7 @@
     content:''; display:block;
     width:32px; height:1px; background:var(--amber);
   }
- 
+
   .hero h2 {
     font-family:'Bebas Neue', sans-serif;
     font-size: clamp(3.5rem, 8vw, 7rem);
@@ -244,7 +244,7 @@
     font-style:normal;
     display:block;
   }
- 
+
   .hero-sub {
     font-size:1.05rem;
     font-weight:300;
@@ -253,7 +253,7 @@
     max-width:520px;
     margin-bottom:36px;
   }
- 
+
   .hero-actions {
     display:flex; gap:14px; flex-wrap:wrap;
   }
@@ -285,7 +285,7 @@
     display:inline-block;
   }
   .btn-outline:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-1px); }
- 
+
   .hero-stats {
     position:absolute; right:60px; top:50%;
     transform:translateY(-50%);
@@ -312,7 +312,7 @@
     letter-spacing:.1em; text-transform:uppercase;
     margin-top:4px;
   }
- 
+
   /* ── HISTORY SECTION ── */
   .history-section { background: var(--navy2); }
   .history-intro {
@@ -371,7 +371,7 @@
     font-size: .68rem; color: var(--gold);
     letter-spacing: .12em; text-transform: uppercase; font-style: normal;
   }
- 
+
   /* ── SECTION SHELL ── */
   section { padding: 48px 60px; }
   .section-label {
@@ -404,7 +404,7 @@
     background:linear-gradient(90deg, transparent, rgba(201,168,76,.3), transparent);
     margin: 0;
   }
- 
+
   /* ── QUICK INFO STRIP ── */
   .quick-strip {
     background: var(--navy2);
@@ -437,7 +437,7 @@
     font-size:.82rem; color:var(--muted);
     font-weight:300;
   }
- 
+
   /* ── ABOUT SECTION ── */
   .about-grid {
     display:grid; grid-template-columns:1fr 1fr;
@@ -471,7 +471,7 @@
     font-size:.8rem; color:var(--muted);
     font-weight:300; line-height:1.5;
   }
- 
+
   /* Facility visual placeholder */
   .facility-visual {
     position:relative;
@@ -522,7 +522,7 @@
     font-size:.6rem; color:rgba(143,163,184,.4);
     letter-spacing:.08em;
   }
- 
+
   /* ── NEW TO HAM ── */
   .new-ham { background:var(--navy2); }
   .ham-cards {
@@ -573,7 +573,7 @@
     transition:border-color .2s;
   }
   .ham-card .card-link:hover { border-color:var(--gold); }
- 
+
   /* ── EVENTS ── */
   .events-layout {
     display:grid; grid-template-columns:1.4fr 1fr; gap:48px;
@@ -621,7 +621,7 @@
   .tag-exam   { background:rgba(201,168,76,.15); color:var(--gold); border:1px solid rgba(201,168,76,.3); }
   .tag-lunch  { background:rgba(232,124,30,.15); color:var(--amber); border:1px solid rgba(232,124,30,.3); }
   .tag-pota   { background:rgba(143,163,184,.12); color:var(--muted); border:1px solid rgba(143,163,184,.25); }
- 
+
   /* calendar widget */
   .calendar-widget {
     background:rgba(18,34,64,.6);
@@ -669,7 +669,7 @@
     font-weight:700;
   }
   .cal-day.empty { opacity:0; pointer-events:none; }
- 
+
   /* ── REPEATERS ── */
   .repeater-section { background:var(--navy2); }
   .repeater-table-wrap {
@@ -708,7 +708,7 @@
   }
   .rep-dot.online { background:var(--green); }
   .rep-dot.linked { background:var(--amber); }
- 
+
   /* ── ARES / EMCOMM STRIP ── */
   .ares-strip {
     background:
@@ -747,7 +747,7 @@
   .ares-cap-text span {
     font-size:.78rem; color:var(--muted); font-weight:300;
   }
- 
+
   .conditions-widget {
     background: var(--navy2);
     border: 1px solid rgba(201,168,76,.15);
@@ -806,7 +806,7 @@
     font-family: 'Share Tech Mono', monospace;
     letter-spacing: .04em;
   }
- 
+
   /* ── BAND CONDITIONS WIDGET ── */
   .solar-indices {
     display: grid;
@@ -847,7 +847,7 @@
   .solar-card.good .solar-card-value { color: var(--green); }
   .solar-card.warn .solar-card-value { color: var(--amber); }
   .solar-card.bad  .solar-card-value { color: var(--red); }
- 
+
   /* ── MEMBERSHIP CTA ── */
   .membership-cta {
     text-align:center;
@@ -904,7 +904,7 @@
   .tier-feature::before {
     content:'–'; position:absolute; left:0; color:var(--gold);
   }
- 
+
   /* ── MODAL ── */
   .modal-overlay {
     display: none;
@@ -917,7 +917,7 @@
     backdrop-filter: blur(4px);
   }
   .modal-overlay.open { display: flex; }
- 
+
   .modal {
     background: var(--navy2);
     border: 1px solid rgba(201,168,76,.3);
@@ -935,7 +935,7 @@
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
- 
+
   .modal-close {
     position: absolute; top: 16px; right: 20px;
     background: none; border: none;
@@ -944,7 +944,7 @@
     transition: color .2s;
   }
   .modal-close:hover { color: var(--gold); }
- 
+
   .modal-eyebrow {
     font-family: 'Share Tech Mono', monospace;
     font-size: .68rem; letter-spacing: .2em;
@@ -956,20 +956,20 @@
     content: ''; display: block;
     width: 16px; height: 1px; background: var(--amber);
   }
- 
+
   .modal-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 2rem; letter-spacing: .04em;
     color: var(--offwhite); line-height: 1;
     margin-bottom: 24px;
   }
- 
+
   .modal-divider {
     height: 1px;
     background: linear-gradient(90deg, rgba(201,168,76,.3), transparent);
     margin-bottom: 24px;
   }
- 
+
   .form-row { margin-bottom: 18px; }
   .form-row label {
     display: block;
@@ -998,17 +998,17 @@
   .form-row textarea:focus { border-color: var(--gold); }
   .form-row textarea { resize: vertical; min-height: 80px; }
   .form-row select { cursor: pointer; }
- 
+
   .form-row-half {
     display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
   }
- 
+
   .form-hint {
     font-family: 'Share Tech Mono', monospace;
     font-size: .6rem; color: var(--muted);
     letter-spacing: .06em; margin-top: 5px;
   }
- 
+
   .modal-tier-badge {
     display: inline-flex; align-items: center; gap: 8px;
     background: rgba(201,168,76,.1);
@@ -1025,7 +1025,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.2rem; color: var(--gold2);
   }
- 
+
   .modal-submit {
     width: 100%; margin-top: 8px;
     background: var(--gold);
@@ -1039,7 +1039,7 @@
     transition: background .2s, transform .1s;
   }
   .modal-submit:hover { background: var(--gold2); transform: translateY(-1px); }
- 
+
   .modal-success {
     display: none;
     text-align: center;
@@ -1106,12 +1106,12 @@
     color:var(--muted);
   }
   .social-btn:hover { border-color:var(--gold); background:rgba(201,168,76,.08); color:var(--gold); }
- 
+
   /* ── TOPBAR / NAV OFFSET ── */
   body { padding-top: 0; }
   .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 901; }
   nav { top: 33px; } /* sits below topbar */
- 
+
   /* ── HAMBURGER BUTTON ── */
   .nav-toggle {
     display: none;
@@ -1135,7 +1135,7 @@
   .nav-toggle.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
   .nav-toggle.open span:nth-child(2) { opacity: 0; }
   .nav-toggle.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
- 
+
   /* ── MOBILE DROPDOWN NAV ── */
   .nav-mobile {
     display: none;
@@ -1175,7 +1175,7 @@
     letter-spacing: .1em;
   }
   .nav-mobile .nav-cta-mobile:hover { background: var(--gold2); color: var(--navy); }
- 
+
   /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
     .nav-links { display: none; }
@@ -1183,42 +1183,42 @@
     nav { padding: 0 24px; }
     .topbar { padding: 7px 24px; }
     .topbar-left span:nth-child(n+2) { display: none; }
- 
+
     .hero { padding-top: 120px; }
     .hero-content { padding: 0 24px 60px; }
     .hero-stats { display: none; }
     .hero h2 { font-size: clamp(2.8rem, 9vw, 5rem); }
- 
+
     section { padding: 36px 24px; }
     .quick-strip { grid-template-columns: 1fr 1fr; }
     .quick-item:nth-child(n+3) { border-top: 1px solid rgba(201,168,76,.1); }
- 
+
     .about-grid { grid-template-columns: 1fr; }
     .facility-visual { min-height: 260px; }
- 
+
     .ham-cards { grid-template-columns: 1fr; }
- 
+
     .events-layout { grid-template-columns: 1fr; }
     .calendar-widget { display: none; }
- 
+
     .ares-strip { grid-template-columns: 1fr; }
     .ares-body { padding: 40px 24px; }
     .ares-side { padding: 32px 24px; border-left: none; border-top: 1px solid rgba(217,79,61,.15); }
- 
+
     .membership-tiers { grid-template-columns: 1fr; max-width: 320px; }
     .membership-cta { padding: 40px 24px; }
- 
+
     footer { padding: 40px 24px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
     .footer-brand { grid-column: 1 / -1; }
   }
- 
+
   @media (max-width: 520px) {
     .quick-strip { grid-template-columns: 1fr; }
     .about-capabilities { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; }
     .hero h2 { font-size: 2.6rem; }
- 
+
     /* Repeater table — stack on mobile */
     .repeater-table-wrap table,
     .repeater-table-wrap thead,
@@ -1254,7 +1254,7 @@
     }
     .repeater-table-wrap td:first-child { color: var(--offwhite); font-size: .9rem; }
   }
- 
+
   /* scroll reveal */
   .reveal {
     opacity:0; transform:translateY(24px);
@@ -1267,7 +1267,7 @@
 </style>
 </head>
 <body>
- 
+
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
@@ -1279,7 +1279,7 @@
     <span>EST. 1952</span> &nbsp;·&nbsp; ARRL AFFILIATED &nbsp;·&nbsp; 501(c)(3) NONPROFIT
   </div>
 </div>
- 
+
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
@@ -1305,7 +1305,7 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
- 
+
 <!-- MOBILE NAV -->
 <div class="nav-mobile" id="navMobile">
   <a href="#about" onclick="closeMobileNav()">About</a>
@@ -1317,7 +1317,7 @@
   <a href="#ares" onclick="closeMobileNav()">ARES</a>
   <a href="#membership" class="nav-cta-mobile" onclick="closeMobileNav()">Join LARA</a>
 </div>
- 
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
@@ -1343,7 +1343,7 @@
     <circle cx="100" cy="8" r="5" fill="#c9a84c" opacity=".6"/>
     <circle cx="100" cy="8" r="10" fill="none" stroke="#c9a84c" stroke-width="1" opacity=".4"/>
   </svg>
- 
+
   <div class="hero-content">
         <p class="hero-eyebrow">Lake County's Amateur Radio Fellowship</p>
     <h2>
@@ -1360,7 +1360,7 @@
       <a href="#new-ham" class="btn-outline">New to Ham Radio?</a>
     </div>
   </div>
- 
+
   <div class="hero-stats">
     <div class="stat-card">
       <div class="stat-num">150+</div>
@@ -1376,7 +1376,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- HISTORY -->
 <section class="history-section" id="history">
   <div class="section-label">Our Story</div>
@@ -1419,9 +1419,9 @@
     <cite>— A longtime LARA member</cite>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- QUICK STRIP -->
 <div class="quick-strip">
   <div class="quick-item">
@@ -1453,9 +1453,9 @@
     </div>
   </div>
 </div>
- 
+
 <div class="divider"></div>
- 
+
 <!-- ABOUT -->
 <section id="about">
   <div class="section-label">Who We Are</div>
@@ -1486,7 +1486,7 @@
         </div>
       </div>
     </div>
- 
+
     <div class="facility-visual">
       <svg class="facility-tower-svg" width="200" height="340" viewBox="0 0 200 340" fill="none">
         <line x1="100" y1="0" x2="10" y2="340" stroke="#c9a84c" stroke-width="1.5"/>
@@ -1509,15 +1509,15 @@
     </div>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- BAND CONDITIONS -->
 <section id="conditions">
   <div class="section-label">HF Propagation</div>
   <h2 class="section-title">Live Band Conditions</h2>
   <p class="section-sub">Real-time solar indices and HF band conditions for Central Florida. Data sourced from hamqsl.com.</p>
- 
+
   <div class="solar-indices reveal" id="solarIndices">
     <div class="solar-card" id="card-sfi">
       <div class="solar-card-value" id="val-sfi">—</div>
@@ -1540,7 +1540,7 @@
       <div class="solar-card-desc">Current</div>
     </div>
   </div>
- 
+
   <div class="conditions-widget reveal">
     <div class="conditions-header">
       <span class="conditions-title">HF Band Status</span>
@@ -1552,9 +1552,9 @@
     <div class="conditions-note" id="conditionsNote">Fetching live data from hamqsl.com...</div>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- NEW TO HAM -->
 <section class="new-ham" id="new-ham">
   <div class="section-label">Getting Started</div>
@@ -1584,9 +1584,9 @@
     </div>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- EVENTS -->
 <section id="events">
   <div class="section-label">What's Coming Up</div>
@@ -1650,7 +1650,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- MINI CALENDAR -->
     <div>
       <div class="calendar-widget reveal">
@@ -1694,9 +1694,9 @@
     </div>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- REPEATERS -->
 <section class="repeater-section" id="repeaters">
   <div class="section-label">On the Air</div>
@@ -1762,9 +1762,9 @@
     Full frequency plan → <a href="#" style="color:var(--gold); text-decoration:none;">Download LCARES Frequency Plan (PDF)</a>
   </p>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- ARES -->
 <div class="ares-strip" id="ares">
   <div class="ares-body">
@@ -1805,7 +1805,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- MEMBERSHIP CTA -->
 <section class="membership-cta" id="membership">
   <div class="section-label">Join the Fellowship</div>
@@ -1834,7 +1834,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
@@ -1881,8 +1881,8 @@
     </div>
   </div>
 </footer>
- 
- 
+
+
 <!-- APPLY FOR MEMBERSHIP MODAL -->
 <div class="modal-overlay" id="modalApply">
   <div class="modal">
@@ -1962,7 +1962,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- PAY DUES MODAL -->
 <div class="modal-overlay" id="modalDues">
   <div class="modal">
@@ -2017,7 +2017,7 @@
     </div>
   </div>
 </div>
- 
+
 <script>
   // Offset hero so it clears the fixed topbar + nav
   function setHeroOffset() {
@@ -2036,7 +2036,7 @@
   }
   setHeroOffset();
   window.addEventListener('resize', setHeroOffset);
- 
+
   // Mobile nav toggle
   var navToggle = document.getElementById('navToggle');
   var navMobile = document.getElementById('navMobile');
@@ -2055,7 +2055,7 @@
       closeMobileNav();
     }
   });
- 
+
   // Modal open/close
   function openModal(id) {
     document.getElementById(id).classList.add('open');
@@ -2079,7 +2079,7 @@
       });
     }
   });
- 
+
   // Update tier badge when membership type changes
   function updateTierBadge(val) {
     var badge = document.getElementById('applyTierBadge');
@@ -2089,13 +2089,13 @@
       badge.innerHTML = '<span class="tier-badge-name">Annual Member</span><span class="tier-badge-price">$75 / year</span>';
     }
   }
- 
+
   // Form submit → show success
   function submitForm(formId, successId) {
     document.getElementById(formId).style.display = 'none';
     document.getElementById(successId).classList.add('show');
   }
- 
+
   // ── LIVE BAND CONDITIONS ──
   const BANDS = [
     { key: 'meter80',  label: '80m' },
@@ -2108,7 +2108,7 @@
     { key: 'meter10',  label: '10m' },
     { key: 'meter6',   label: '6m'  },
   ];
- 
+
   function statusClass(val) {
     if (!val) return 'status-closed';
     const v = val.toLowerCase();
@@ -2117,21 +2117,21 @@
     if (v === 'poor')   return 'status-poor';
     return 'status-closed';
   }
- 
+
   function kIndexClass(k) {
     const n = parseInt(k);
     if (n <= 2) return 'good';
     if (n <= 4) return 'warn';
     return 'bad';
   }
- 
+
   function aIndexClass(a) {
     const n = parseInt(a);
     if (n <= 7)  return 'good';
     if (n <= 20) return 'warn';
     return 'bad';
   }
- 
+
   function renderFallback() {
     const grid = document.getElementById('bandsGrid');
     const fallback = [
@@ -2152,7 +2152,7 @@
       document.getElementById('val-'+id).textContent = '—';
     });
   }
- 
+
   async function fetchBandConditions() {
     try {
       const proxy = 'https://corsproxy.io/?';
@@ -2162,28 +2162,28 @@
       const text = await res.text();
       const parser = new DOMParser();
       const xml = parser.parseFromString(text, 'text/xml');
- 
+
       const get = function(tag) {
         const el = xml.querySelector(tag);
         return el ? el.textContent.trim() : '—';
       };
- 
+
       const sfi    = get('solarflux');
       const sn     = get('sunspots');
       const aindex = get('aindex');
       const kindex = get('kindex');
       const updated = get('updated');
- 
+
       document.getElementById('val-sfi').textContent    = sfi;
       document.getElementById('val-sn').textContent     = sn;
       document.getElementById('val-aindex').textContent = aindex;
       document.getElementById('val-kindex').textContent = kindex;
- 
+
       document.getElementById('card-kindex').className =
         'solar-card ' + kIndexClass(kindex);
       document.getElementById('card-aindex').className =
         'solar-card ' + aIndexClass(aindex);
- 
+
       const grid = document.getElementById('bandsGrid');
       const bandEls = BANDS.map(function(b) {
         const dayEl   = xml.querySelector('band[name="'+b.key+'"] > day');
@@ -2197,18 +2197,18 @@
         '</div>';
       }).join('');
       grid.innerHTML = bandEls;
- 
+
       document.getElementById('conditions-updated').textContent =
         'Updated ' + (updated || 'recently');
       document.getElementById('conditionsNote').textContent =
         'SFI: '+sfi+' · SN: '+sn+' · A-Index: '+aindex+' · K-Index: '+kindex+
         ' · Source: hamqsl.com / N0NBH';
- 
+
     } catch(e) {
       renderFallback();
     }
   }
- 
+
   fetchBandConditions();
   setInterval(fetchBandConditions, 5 * 60 * 1000);
   const reveals = document.querySelectorAll('.reveal');
@@ -2218,7 +2218,7 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => io.observe(el));
- 
+
   // Nav active state on scroll
   const sections = document.querySelectorAll('section[id], div[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
