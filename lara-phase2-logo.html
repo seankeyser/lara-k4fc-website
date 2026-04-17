@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LARA – Lake Amateur Radio Association</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #254878;
+    --navy2:   #122240;
+    --gold:    #c9a84c;
+    --gold2:   #f0c96a;
+    --amber:   #e87c1e;
+    --offwhite:#f2ede4;
+    --muted:   #8fa3b8;
+    --green:   #2db37a;
+    --red:     #d94f3d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--navy);
+    color: var(--offwhite);
+    overflow-x: hidden;
+  }
+
+  /* ── SCANLINE TEXTURE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,.04) 2px,
+      rgba(0,0,0,.04) 4px
+    );
+    pointer-events:none;
+    z-index:1000;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: #06101e;
+    border-bottom: 1px solid rgba(201,168,76,.2);
+    padding: 7px 48px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem;
+    color: var(--muted);
+    letter-spacing:.06em;
+  }
+  .topbar-left { display:flex; gap:28px; }
+  .topbar span { color:var(--gold); }
+  .status-dot {
+    display:inline-block; width:8px; height:8px;
+    border-radius:50%; background:var(--green);
+    margin-right:6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100%{ opacity:1; } 50%{ opacity:.3; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    border-bottom: 3px solid var(--gold);
+    padding: 0 48px;
+    display:flex; align-items:center; justify-content:space-between;
+    position: fixed; top:0; left:0; right:0; z-index:900;
+    min-height: 80px;
+  }
+  .nav-logo {
+    display:flex; align-items:center; gap:18px;
+    padding: 16px 0;
+    text-decoration:none;
+  }
+  .logo-badge {
+    width:96px; height:96px;
+    border:2.5px solid var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    background: var(--navy2);
+    box-shadow: 0 0 18px rgba(201,168,76,.18);
+    flex-shrink: 0;
+  }
+  .logo-badge .callsign {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.95rem; color:var(--gold); line-height:1;
+    letter-spacing:.04em;
+  }
+  .logo-badge .est {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.6rem; color:var(--muted); letter-spacing:.06em;
+    margin-top:2px;
+  }
+  .logo-text h1 {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:3.2rem; color:var(--offwhite); letter-spacing:.06em; line-height:1;
+  }
+  .logo-text p {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.92rem; color:var(--gold); letter-spacing:.14em;
+    margin-top:5px;
+  }
+
+  .nav-links {
+    display:flex; gap:4px; list-style:none; align-items:center;
+  }
+  .nav-links li a {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.82rem; letter-spacing:.1em;
+    color:var(--muted); text-decoration:none;
+    padding: 9px 16px;
+    display:block;
+    border-radius:3px;
+    position: relative;
+    transition: color .2s, background .2s;
+    text-transform:uppercase;
+  }
+  .nav-links li a:hover {
+    color:var(--gold2);
+    background: rgba(201,168,76,.1);
+  }
+  .nav-links li a.active {
+    color:var(--gold2);
+    background: rgba(201,168,76,.14);
+    box-shadow: inset 0 -2px 0 var(--gold);
+  }
+  .nav-cta {
+    background:var(--gold) !important;
+    color:var(--navy) !important;
+    border-radius:3px;
+    padding: 10px 22px !important;
+    font-size:.82rem !important;
+    font-weight:700;
+    letter-spacing:.1em !important;
+    transition: background .2s, transform .15s !important;
+    box-shadow: 0 2px 12px rgba(201,168,76,.25);
+  }
+  .nav-cta:hover {
+    background:var(--gold2) !important;
+    color:var(--navy) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(201,168,76,.35) !important;
+  }
+  .nav-cta.active { background: var(--gold2) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position:relative;
+    min-height:92vh;
+    display:flex; align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(232,124,30,.06) 0%, transparent 60%),
+      linear-gradient(160deg, #0b1a2e 0%, #0e2440 50%, #0b1a2e 100%);
+  }
+  /* Antenna tower silhouette SVG */
+  .hero-tower {
+    position:absolute; right:8%; bottom:0;
+    width:320px; opacity:.18;
+    pointer-events:none;
+  }
+  /* Radio wave rings */
+  .wave-rings {
+    position:absolute; right:calc(8% + 40px); bottom:180px;
+    width:400px; height:400px;
+    pointer-events:none;
+  }
+  .wave-rings span {
+    position:absolute; inset:0;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    opacity:0;
+    animation: wavePulse 3s ease-out infinite;
+  }
+  .wave-rings span:nth-child(2){ animation-delay:.8s; }
+  .wave-rings span:nth-child(3){ animation-delay:1.6s; }
+  .wave-rings span:nth-child(4){ animation-delay:2.4s; }
+  @keyframes wavePulse {
+    0%   { transform:scale(.1); opacity:.5; }
+    100% { transform:scale(1);  opacity:0; }
+  }
+
+  .hero-grid-lines {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content {
+    position:relative; z-index:2;
+    padding: 0 60px 80px;
+    max-width:700px;
+    animation: fadeUp .9s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .hero-logo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 24px rgba(201,168,76,.35), 0 0 60px rgba(201,168,76,.12);
+    margin-bottom: 28px;
+    display: block;
+    animation: fadeUp .7s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.72rem; letter-spacing:.18em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before {
+    content:''; display:block;
+    width:32px; height:1px; background:var(--amber);
+  }
+
+  .hero h2 {
+    font-family:'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height:.95;
+    letter-spacing:.02em;
+    color:var(--offwhite);
+    margin-bottom:24px;
+  }
+  .hero h2 em {
+    color:var(--gold);
+    font-style:normal;
+    display:block;
+  }
+
+  .hero-sub {
+    font-size:1.05rem;
+    font-weight:300;
+    color:var(--muted);
+    line-height:1.7;
+    max-width:520px;
+    margin-bottom:36px;
+  }
+
+  .hero-actions {
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn-primary {
+    background:var(--gold);
+    color:var(--navy);
+    font-family:'Share Tech Mono', monospace;
+    font-size:.8rem; letter-spacing:.1em;
+    text-transform:uppercase;
+    padding: 14px 28px;
+    border:none; border-radius:3px;
+    cursor:pointer; text-decoration:none;
+    font-weight:700;
+    transition: background .2s, transform .1s;
+    display:inline-block;
+  }
+  .btn-primary:hover { background:var(--gold2); transform:translateY(-1px); }
+  .btn-outline {
+    background:transparent;
+    color:var(--offwhite);
+    font-family:'Share Tech Mono', monospace;
+    font-size:.8rem; letter-spacing:.1em;
+    text-transform:uppercase;
+    padding: 13px 28px;
+    border:1px solid rgba(242,237,228,.3);
+    border-radius:3px;
+    cursor:pointer; text-decoration:none;
+    transition: border-color .2s, color .2s, transform .1s;
+    display:inline-block;
+  }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-1px); }
+
+  .hero-stats {
+    position:absolute; right:60px; top:50%;
+    transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:28px;
+    z-index:2;
+    animation: fadeUp 1.1s .3s ease both;
+  }
+  .stat-card {
+    background: rgba(18,34,64,.7);
+    border:1px solid rgba(201,168,76,.2);
+    border-left: 3px solid var(--gold);
+    backdrop-filter:blur(8px);
+    padding: 16px 22px;
+    min-width:160px;
+  }
+  .stat-num {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:2.4rem; color:var(--gold2);
+    line-height:1;
+  }
+  .stat-label {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.62rem; color:var(--muted);
+    letter-spacing:.1em; text-transform:uppercase;
+    margin-top:4px;
+  }
+
+  /* ── HISTORY SECTION ── */
+  .history-section { background: var(--navy2); }
+  .history-intro {
+    font-size: 1rem; font-weight: 300;
+    color: var(--muted); line-height: 1.8;
+    max-width: 680px; margin-bottom: 56px;
+  }
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold), rgba(201,168,76,.1));
+  }
+  .timeline-item { position: relative; margin-bottom: 44px; padding-left: 28px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -40px; top: 8px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--navy2);
+    box-shadow: 0 0 0 3px rgba(201,168,76,.2);
+  }
+  .timeline-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--gold);
+    letter-spacing: .06em; line-height: 1; margin-bottom: 6px;
+  }
+  .timeline-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .78rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--offwhite); margin-bottom: 8px;
+  }
+  .timeline-desc {
+    font-size: .9rem; font-weight: 300;
+    color: var(--muted); line-height: 1.7; max-width: 580px;
+  }
+  .history-callout {
+    margin-top: 56px; padding: 32px 40px;
+    background: rgba(201,168,76,.06);
+    border: 1px solid rgba(201,168,76,.2);
+    border-left: 4px solid var(--gold);
+    border-radius: 2px; max-width: 700px;
+  }
+  .history-callout p {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--offwhite); line-height: 1.8; font-style: italic;
+  }
+  .history-callout cite {
+    display: block; margin-top: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .68rem; color: var(--gold);
+    letter-spacing: .12em; text-transform: uppercase; font-style: normal;
+  }
+
+  /* ── SECTION SHELL ── */
+  section { padding: 80px 60px; }
+  .section-label {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.68rem; letter-spacing:.2em;
+    color:var(--amber); text-transform:uppercase;
+    margin-bottom:10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-label::before {
+    content:''; display:block;
+    width:20px; height:1px; background:var(--amber);
+  }
+  .section-title {
+    font-family:'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing:.04em;
+    color:var(--offwhite);
+    margin-bottom:14px;
+    line-height:1;
+  }
+  .section-sub {
+    font-size:.95rem; font-weight:300;
+    color:var(--muted); line-height:1.7;
+    max-width:540px;
+    margin-bottom:48px;
+  }
+  .divider {
+    width:100%; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(201,168,76,.3), transparent);
+    margin: 0;
+  }
+
+  /* ── QUICK INFO STRIP ── */
+  .quick-strip {
+    background: var(--navy2);
+    border-top: 1px solid rgba(201,168,76,.15);
+    border-bottom: 1px solid rgba(201,168,76,.15);
+    display:grid; grid-template-columns: repeat(4,1fr);
+    gap:0;
+  }
+  .quick-item {
+    padding: 28px 32px;
+    border-right:1px solid rgba(201,168,76,.1);
+    display:flex; align-items:center; gap:16px;
+    transition: background .2s;
+    cursor:default;
+  }
+  .quick-item:last-child { border-right:none; }
+  .quick-item:hover { background:rgba(201,168,76,.04); }
+  .quick-icon {
+    font-size:1.6rem; flex-shrink:0;
+    filter: saturate(.8);
+  }
+  .quick-text strong {
+    display:block;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem; letter-spacing:.06em;
+    color:var(--gold2); text-transform:uppercase;
+    margin-bottom:3px;
+  }
+  .quick-text span {
+    font-size:.82rem; color:var(--muted);
+    font-weight:300;
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:60px; align-items:start;
+  }
+  .about-body p {
+    font-size:.95rem; line-height:1.8; color:var(--muted);
+    margin-bottom:16px;
+    font-weight:300;
+  }
+  .about-body p strong { color:var(--offwhite); font-weight:600; }
+  .about-capabilities {
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    margin-top:32px;
+  }
+  .cap-item {
+    background:rgba(18,34,64,.6);
+    border:1px solid rgba(201,168,76,.15);
+    border-top:2px solid var(--gold);
+    padding:16px 18px;
+    transition: border-top-color .2s, transform .2s;
+  }
+  .cap-item:hover { border-top-color:var(--amber); transform:translateY(-2px); }
+  .cap-title {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem; letter-spacing:.1em;
+    color:var(--gold); text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .cap-desc {
+    font-size:.8rem; color:var(--muted);
+    font-weight:300; line-height:1.5;
+  }
+
+  /* Facility visual placeholder */
+  .facility-visual {
+    position:relative;
+    background: linear-gradient(135deg, #0e2440 0%, #112038 100%);
+    border:1px solid rgba(201,168,76,.2);
+    border-radius:4px;
+    min-height:420px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .facility-visual::before {
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(201,168,76,.12) 0%, transparent 60%);
+  }
+  .facility-tower-svg {
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    opacity:.25;
+  }
+  .facility-label {
+    position:relative; z-index:2; text-align:center;
+  }
+  .facility-label .callsign-big {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:5rem; color:var(--gold);
+    opacity:.4; letter-spacing:.1em;
+    display:block;
+  }
+  .facility-label p {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem; color:var(--muted);
+    letter-spacing:.14em; text-transform:uppercase;
+  }
+  .facility-badge {
+    position:absolute; top:20px; right:20px;
+    background:rgba(201,168,76,.15);
+    border:1px solid rgba(201,168,76,.3);
+    padding:8px 12px;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem; color:var(--gold);
+    letter-spacing:.1em;
+    border-radius:2px;
+  }
+  .photo-placeholder-note {
+    position:absolute; bottom:16px; left:16px;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.6rem; color:rgba(143,163,184,.4);
+    letter-spacing:.08em;
+  }
+
+  /* ── NEW TO HAM ── */
+  .new-ham { background:var(--navy2); }
+  .ham-cards {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  .ham-card {
+    background:var(--navy);
+    border:1px solid rgba(201,168,76,.12);
+    padding:32px 28px;
+    position:relative;
+    overflow:hidden;
+    transition:border-color .25s, transform .25s;
+    cursor:default;
+  }
+  .ham-card:hover { border-color:rgba(201,168,76,.4); transform:translateY(-3px); }
+  .ham-card::after {
+    content:'';
+    position:absolute; bottom:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--gold), var(--amber));
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .3s;
+  }
+  .ham-card:hover::after { transform:scaleX(1); }
+  .ham-card-num {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:3.5rem; color:rgba(201,168,76,.1);
+    position:absolute; top:12px; right:20px;
+    line-height:1;
+  }
+  .ham-card-icon { font-size:1.8rem; margin-bottom:14px; }
+  .ham-card h3 {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.4rem; letter-spacing:.04em;
+    color:var(--offwhite); margin-bottom:10px;
+  }
+  .ham-card p {
+    font-size:.85rem; color:var(--muted);
+    font-weight:300; line-height:1.65;
+  }
+  .ham-card .card-link {
+    display:inline-block; margin-top:16px;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem; letter-spacing:.1em;
+    color:var(--gold); text-decoration:none;
+    text-transform:uppercase;
+    border-bottom:1px solid rgba(201,168,76,.3);
+    padding-bottom:2px;
+    transition:border-color .2s;
+  }
+  .ham-card .card-link:hover { border-color:var(--gold); }
+
+  /* ── EVENTS ── */
+  .events-layout {
+    display:grid; grid-template-columns:1.4fr 1fr; gap:48px;
+  }
+  .event-list { display:flex; flex-direction:column; gap:0; }
+  .event-item {
+    display:flex; gap:20px; padding:22px 0;
+    border-bottom:1px solid rgba(201,168,76,.1);
+    align-items:flex-start;
+    transition:background .15s;
+  }
+  .event-item:first-child { border-top:1px solid rgba(201,168,76,.1); }
+  .event-date-box {
+    background:rgba(201,168,76,.1);
+    border:1px solid rgba(201,168,76,.25);
+    min-width:58px; text-align:center;
+    padding:8px 6px; flex-shrink:0;
+  }
+  .event-date-box .month {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.58rem; color:var(--gold); letter-spacing:.1em;
+    text-transform:uppercase; display:block;
+  }
+  .event-date-box .day {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.8rem; color:var(--offwhite);
+    line-height:1; display:block;
+  }
+  .event-info h4 {
+    font-family:'Source Serif 4', serif;
+    font-size:.98rem; color:var(--offwhite);
+    margin-bottom:4px; font-weight:600;
+  }
+  .event-info p {
+    font-size:.8rem; color:var(--muted);
+    font-weight:300; line-height:1.5;
+  }
+  .event-tag {
+    display:inline-block; margin-top:6px;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.58rem; letter-spacing:.08em; text-transform:uppercase;
+    padding:2px 8px; border-radius:2px;
+  }
+  .tag-meeting { background:rgba(45,179,122,.15); color:var(--green); border:1px solid rgba(45,179,122,.3); }
+  .tag-exam   { background:rgba(201,168,76,.15); color:var(--gold); border:1px solid rgba(201,168,76,.3); }
+  .tag-lunch  { background:rgba(232,124,30,.15); color:var(--amber); border:1px solid rgba(232,124,30,.3); }
+  .tag-pota   { background:rgba(143,163,184,.12); color:var(--muted); border:1px solid rgba(143,163,184,.25); }
+
+  /* calendar widget */
+  .calendar-widget {
+    background:rgba(18,34,64,.6);
+    border:1px solid rgba(201,168,76,.15);
+    padding:24px;
+  }
+  .cal-header {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:18px;
+  }
+  .cal-header h4 {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.2rem; letter-spacing:.06em; color:var(--gold2);
+  }
+  .cal-header span {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.62rem; color:var(--muted); letter-spacing:.1em;
+  }
+  .cal-grid {
+    display:grid; grid-template-columns:repeat(7,1fr);
+    gap:4px; text-align:center;
+  }
+  .cal-day-name {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.55rem; color:var(--muted);
+    letter-spacing:.06em; text-transform:uppercase;
+    padding:4px 0;
+  }
+  .cal-day {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem; color:var(--muted);
+    padding:5px 0; border-radius:2px;
+    cursor:default;
+    transition:background .15s;
+  }
+  .cal-day:hover { background:rgba(201,168,76,.08); color:var(--offwhite); }
+  .cal-day.event {
+    background:rgba(201,168,76,.15);
+    color:var(--gold2);
+    font-weight:700;
+  }
+  .cal-day.today {
+    background:var(--gold);
+    color:var(--navy);
+    font-weight:700;
+  }
+  .cal-day.empty { opacity:0; pointer-events:none; }
+
+  /* ── REPEATERS ── */
+  .repeater-section { background:var(--navy2); }
+  .repeater-table-wrap {
+    overflow-x:auto;
+    border:1px solid rgba(201,168,76,.15);
+    border-radius:3px;
+  }
+  table {
+    width:100%; border-collapse:collapse;
+    font-size:.85rem;
+  }
+  thead tr { background:rgba(201,168,76,.12); }
+  thead th {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--gold); padding:14px 20px; text-align:left;
+    border-bottom:1px solid rgba(201,168,76,.2);
+    font-weight:normal;
+  }
+  tbody tr {
+    border-bottom:1px solid rgba(201,168,76,.07);
+    transition:background .15s;
+  }
+  tbody tr:hover { background:rgba(201,168,76,.05); }
+  tbody td {
+    padding:13px 20px; color:var(--muted); font-weight:300;
+    font-family:'Share Tech Mono', monospace; font-size:.78rem;
+  }
+  tbody td:first-child { color:var(--offwhite); }
+  .rep-status {
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .rep-dot {
+    width:6px; height:6px; border-radius:50%;
+    display:inline-block;
+  }
+  .rep-dot.online { background:var(--green); }
+  .rep-dot.linked { background:var(--amber); }
+
+  /* ── ARES / EMCOMM STRIP ── */
+  .ares-strip {
+    background:
+      linear-gradient(120deg, rgba(217,79,61,.07) 0%, transparent 50%),
+      var(--navy);
+    border-top:1px solid rgba(217,79,61,.2);
+    border-bottom:1px solid rgba(217,79,61,.2);
+    display:grid; grid-template-columns:2fr 1fr;
+    gap:0;
+  }
+  .ares-body { padding:60px; }
+  .ares-body .section-label { color:var(--red); }
+  .ares-body .section-label::before { background:var(--red); }
+  .ares-body p {
+    font-size:.92rem; color:var(--muted);
+    font-weight:300; line-height:1.8; max-width:520px;
+    margin-bottom:20px;
+  }
+  .ares-body .btn-outline { border-color:rgba(217,79,61,.4); color:var(--red); }
+  .ares-body .btn-outline:hover { border-color:var(--red); }
+  .ares-side {
+    background:rgba(217,79,61,.06);
+    border-left:1px solid rgba(217,79,61,.15);
+    padding:48px 40px;
+    display:flex; flex-direction:column; justify-content:center; gap:20px;
+  }
+  .ares-cap {
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  .ares-cap-icon { font-size:1.3rem; flex-shrink:0; margin-top:2px; }
+  .ares-cap-text strong {
+    display:block; font-family:'Share Tech Mono', monospace;
+    font-size:.7rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--offwhite); margin-bottom:3px;
+  }
+  .ares-cap-text span {
+    font-size:.78rem; color:var(--muted); font-weight:300;
+  }
+
+  .conditions-widget {
+    background: var(--navy2);
+    border: 1px solid rgba(201,168,76,.15);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .conditions-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.25rem; padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(201,168,76,.1);
+  }
+  .conditions-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+  }
+  .conditions-live {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .7rem; color: var(--green);
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  .bands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: .75rem;
+  }
+  .band-cell {
+    background: var(--navy);
+    border: 1px solid rgba(201,168,76,.12);
+    border-radius: 3px;
+    padding: .75rem;
+    text-align: center;
+  }
+  .band-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem; color: var(--muted); margin-bottom: .4rem;
+  }
+  .band-status {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .95rem; letter-spacing: .05em; text-transform: uppercase;
+  }
+  .status-good    { color: var(--green); }
+  .status-fair    { color: var(--amber); }
+  .status-poor    { color: var(--red); }
+  .status-closed  { color: rgba(143,163,184,.4); }
+  .conditions-note {
+    font-size: .75rem; color: var(--muted);
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid rgba(201,168,76,.1);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: .04em;
+  }
+
+  /* ── BAND CONDITIONS WIDGET ── */
+  .solar-indices {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .solar-card {
+    background: var(--navy);
+    border: 1px solid rgba(201,168,76,.2);
+    border-radius: 4px;
+    padding: 14px 16px;
+    text-align: center;
+    transition: border-color .2s;
+  }
+  .solar-card:hover { border-color: rgba(201,168,76,.5); }
+  .solar-card-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--gold2);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .solar-card-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .62rem;
+    color: var(--muted);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .solar-card-desc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .58rem;
+    color: rgba(143,163,184,.5);
+    letter-spacing: .06em;
+    margin-top: 3px;
+  }
+  .solar-card.good .solar-card-value { color: var(--green); }
+  .solar-card.warn .solar-card-value { color: var(--amber); }
+  .solar-card.bad  .solar-card-value { color: var(--red); }
+
+  /* ── MEMBERSHIP CTA ── */
+  .membership-cta {
+    text-align:center;
+    padding: 100px 60px;
+    position:relative; overflow:hidden;
+  }
+  .membership-cta::before {
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,.07) 0%, transparent 70%);
+  }
+  .membership-cta .section-label { justify-content:center; }
+  .membership-cta .section-label::before { display:none; }
+  .membership-cta .section-title { font-size:clamp(2.5rem,5vw,4rem); }
+  .cta-sub {
+    font-size:1rem; color:var(--muted); font-weight:300;
+    max-width:480px; margin:0 auto 40px; line-height:1.7;
+  }
+  .cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .membership-tiers {
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:16px; max-width:500px; margin:48px auto 0;
+    position:relative; z-index:2;
+  }
+  .tier {
+    background:rgba(18,34,64,.6);
+    border:1px solid rgba(201,168,76,.15);
+    padding:22px 18px; border-radius:3px;
+    transition:border-color .2s, transform .2s;
+  }
+  .tier:hover { border-color:rgba(201,168,76,.4); transform:translateY(-2px); }
+  .tier.featured {
+    border-color:var(--gold);
+    background:rgba(201,168,76,.08);
+  }
+  .tier-name {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:6px;
+  }
+  .tier-price {
+    font-family:'Bebas Neue', sans-serif;
+    font-size:2rem; color:var(--offwhite); line-height:1;
+    margin-bottom:4px;
+  }
+  .tier-period {
+    font-size:.72rem; color:var(--muted); font-weight:300; display:block; margin-bottom:12px;
+  }
+  .tier-feature {
+    font-size:.75rem; color:var(--muted); font-weight:300;
+    margin-bottom:5px; padding-left:14px; position:relative;
+  }
+  .tier-feature::before {
+    content:'–'; position:absolute; left:0; color:var(--gold);
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(6,16,30,0.88);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--navy2);
+    border: 1px solid rgba(201,168,76,.3);
+    border-top: 3px solid var(--gold);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+    animation: modalIn .25s ease both;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none;
+    color: var(--muted); font-size: 1.4rem;
+    cursor: pointer; line-height: 1;
+    transition: color .2s;
+  }
+  .modal-close:hover { color: var(--gold); }
+
+  .modal-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .68rem; letter-spacing: .2em;
+    color: var(--amber); text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-eyebrow::before {
+    content: ''; display: block;
+    width: 16px; height: 1px; background: var(--amber);
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .04em;
+    color: var(--offwhite); line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,.3), transparent);
+    margin-bottom: 24px;
+  }
+
+  .form-row { margin-bottom: 18px; }
+  .form-row label {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .65rem; letter-spacing: .12em;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    background: rgba(11,26,46,.8);
+    border: 1px solid rgba(201,168,76,.2);
+    border-radius: 3px;
+    padding: 10px 14px;
+    color: var(--offwhite);
+    font-family: 'Source Serif 4', serif;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s;
+    appearance: none;
+  }
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus { border-color: var(--gold); }
+  .form-row textarea { resize: vertical; min-height: 80px; }
+  .form-row select { cursor: pointer; }
+
+  .form-row-half {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+
+  .form-hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .6rem; color: var(--muted);
+    letter-spacing: .06em; margin-top: 5px;
+  }
+
+  .modal-tier-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,.1);
+    border: 1px solid rgba(201,168,76,.25);
+    padding: 8px 16px; border-radius: 3px;
+    margin-bottom: 24px;
+  }
+  .modal-tier-badge .tier-badge-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .72rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .modal-tier-badge .tier-badge-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; color: var(--gold2);
+  }
+
+  .modal-submit {
+    width: 100%; margin-top: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .8rem; letter-spacing: .12em;
+    text-transform: uppercase; font-weight: 700;
+    padding: 14px;
+    border: none; border-radius: 3px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .modal-submit:hover { background: var(--gold2); transform: translateY(-1px); }
+
+  .modal-success {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .modal-success.show { display: block; }
+  .modal-success .success-icon {
+    font-size: 2.5rem; margin-bottom: 16px;
+  }
+  .modal-success h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; color: var(--gold);
+    letter-spacing: .04em; margin-bottom: 10px;
+  }
+  .modal-success p {
+    font-size: .9rem; color: var(--muted);
+    font-weight: 300; line-height: 1.7;
+  }
+  .modal-form-body { }
+  footer {
+    background:var(--navy2);
+    border-top:1px solid rgba(201,168,76,.15);
+    padding:60px;
+  }
+  .footer-grid {
+    display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:48px; margin-bottom:48px;
+  }
+  .footer-brand .logo-badge { margin-bottom:16px; }
+  .footer-brand p {
+    font-size:.8rem; color:var(--muted); font-weight:300;
+    line-height:1.7; margin-top:12px; max-width:260px;
+  }
+  .footer-col h5 {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:16px;
+  }
+  .footer-col a {
+    display:block; font-size:.82rem; color:var(--muted);
+    text-decoration:none; margin-bottom:9px;
+    font-weight:300; transition:color .2s;
+  }
+  .footer-col a:hover { color:var(--offwhite); }
+  .footer-bottom {
+    border-top:1px solid rgba(201,168,76,.1);
+    padding-top:24px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px;
+  }
+  .footer-bottom p {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.62rem; color:rgba(143,163,184,.5);
+    letter-spacing:.07em;
+  }
+  .footer-social { display:flex; gap:12px; }
+  .social-btn {
+    width:34px; height:34px;
+    border:1px solid rgba(201,168,76,.2);
+    border-radius:3px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.85rem; text-decoration:none;
+    transition:border-color .2s, background .2s;
+    color:var(--muted);
+  }
+  .social-btn:hover { border-color:var(--gold); background:rgba(201,168,76,.08); color:var(--gold); }
+
+  /* ── TOPBAR / NAV OFFSET ── */
+  body { padding-top: 0; }
+  .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 901; }
+  nav { top: 33px; } /* sits below topbar */
+
+  /* ── HAMBURGER BUTTON ── */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 4px;
+    z-index: 1001;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: transform .3s, opacity .3s;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+  /* ── MOBILE DROPDOWN NAV ── */
+  .nav-mobile {
+    display: none;
+    position: fixed;
+    top: 113px; left: 0; right: 0;
+    background: rgba(11,26,46,0.98);
+    border-bottom: 2px solid var(--gold);
+    padding: 1rem 2rem 1.5rem;
+    flex-direction: column;
+    gap: 0;
+    z-index: 899;
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .85rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(201,168,76,.08);
+    transition: color .2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--gold2); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 14px;
+    background: var(--gold);
+    color: var(--navy);
+    text-align: center;
+    padding: 14px;
+    border-radius: 3px;
+    font-weight: 700;
+    border-bottom: none !important;
+    font-size: .85rem;
+    letter-spacing: .1em;
+  }
+  .nav-mobile .nav-cta-mobile:hover { background: var(--gold2); color: var(--navy); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    nav { padding: 0 24px; }
+    .topbar { padding: 7px 24px; }
+    .topbar-left span:nth-child(n+2) { display: none; }
+
+    .hero { padding-top: 120px; }
+    .hero-content { padding: 0 24px 60px; }
+    .hero-stats { display: none; }
+    .hero h2 { font-size: clamp(2.8rem, 9vw, 5rem); }
+
+    section { padding: 56px 24px; }
+    .quick-strip { grid-template-columns: 1fr 1fr; }
+    .quick-item:nth-child(n+3) { border-top: 1px solid rgba(201,168,76,.1); }
+
+    .about-grid { grid-template-columns: 1fr; }
+    .facility-visual { min-height: 260px; }
+
+    .ham-cards { grid-template-columns: 1fr; }
+
+    .events-layout { grid-template-columns: 1fr; }
+    .calendar-widget { display: none; }
+
+    .ares-strip { grid-template-columns: 1fr; }
+    .ares-body { padding: 40px 24px; }
+    .ares-side { padding: 32px 24px; border-left: none; border-top: 1px solid rgba(217,79,61,.15); }
+
+    .membership-tiers { grid-template-columns: 1fr; max-width: 320px; }
+    .membership-cta { padding: 64px 24px; }
+
+    footer { padding: 40px 24px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 520px) {
+    .quick-strip { grid-template-columns: 1fr; }
+    .about-capabilities { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero h2 { font-size: 2.6rem; }
+
+    /* Repeater table — stack on mobile */
+    .repeater-table-wrap table,
+    .repeater-table-wrap thead,
+    .repeater-table-wrap tbody,
+    .repeater-table-wrap th,
+    .repeater-table-wrap td,
+    .repeater-table-wrap tr { display: block; }
+    .repeater-table-wrap thead { display: none; }
+    .repeater-table-wrap tr {
+      border: 1px solid rgba(201,168,76,.15);
+      border-radius: 3px;
+      margin-bottom: 10px;
+      padding: 12px 16px;
+    }
+    .repeater-table-wrap td {
+      padding: 4px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .78rem;
+      border-bottom: 1px solid rgba(201,168,76,.06);
+    }
+    .repeater-table-wrap td:last-child { border-bottom: none; }
+    .repeater-table-wrap td::before {
+      content: attr(data-label);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+    .repeater-table-wrap td:first-child { color: var(--offwhite); font-size: .9rem; }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity:0; transform:translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:.1s; }
+  .reveal-delay-2 { transition-delay:.2s; }
+  .reveal-delay-3 { transition-delay:.3s; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span><span class="status-dot"></span>K4FC ON THE AIR</span>
+    <span>NET: 147.195 MHz / PL 100.0</span>
+    <span>LAKE COUNTY, FL</span>
+  </div>
+  <div>
+    <span>EST. 1952</span> &nbsp;·&nbsp; ARRL AFFILIATED &nbsp;·&nbsp; 501(c)(3) NONPROFIT
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-badge">
+      <span class="callsign">K4FC</span>
+      <span class="est">EST 1952</span>
+    </div>
+    <div class="logo-text">
+      <h1>LARA</h1>
+      <p>Lake Amateur Radio Association</p>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#conditions">Bands</a></li>
+    <li><a href="#new-ham">New to Ham?</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#repeaters">Repeaters</a></li>
+    <li><a href="#ares">ARES</a></li>
+    <li><a href="#membership" class="nav-cta">Join LARA</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#history" onclick="closeMobileNav()">History</a>
+  <a href="#conditions" onclick="closeMobileNav()">Band Conditions</a>
+  <a href="#new-ham" onclick="closeMobileNav()">New to Ham?</a>
+  <a href="#events" onclick="closeMobileNav()">Events</a>
+  <a href="#repeaters" onclick="closeMobileNav()">Repeaters</a>
+  <a href="#ares" onclick="closeMobileNav()">ARES</a>
+  <a href="#membership" class="nav-cta-mobile" onclick="closeMobileNav()">Join LARA</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="wave-rings">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <!-- Antenna tower SVG silhouette -->
+  <svg class="hero-tower" viewBox="0 0 200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="100" y1="0" x2="20" y2="600" stroke="#c9a84c" stroke-width="2"/>
+    <line x1="100" y1="0" x2="180" y2="600" stroke="#c9a84c" stroke-width="2"/>
+    <line x1="100" y1="0" x2="100" y2="600" stroke="#c9a84c" stroke-width="1" stroke-dasharray="6 4"/>
+    <!-- crossbars -->
+    <line x1="68" y1="120" x2="132" y2="120" stroke="#c9a84c" stroke-width="1.5"/>
+    <line x1="56" y1="240" x2="144" y2="240" stroke="#c9a84c" stroke-width="1.5"/>
+    <line x1="44" y1="360" x2="156" y2="360" stroke="#c9a84c" stroke-width="1.5"/>
+    <line x1="30" y1="480" x2="170" y2="480" stroke="#c9a84c" stroke-width="1.5"/>
+    <!-- yagi antennas -->
+    <line x1="60" y1="80" x2="140" y2="80" stroke="#c9a84c" stroke-width="2.5"/>
+    <line x1="50" y1="60" x2="150" y2="60" stroke="#c9a84c" stroke-width="1.5"/>
+    <line x1="65" y1="45" x2="135" y2="45" stroke="#c9a84c" stroke-width="1.5"/>
+    <!-- beacon -->
+    <circle cx="100" cy="8" r="5" fill="#c9a84c" opacity=".6"/>
+    <circle cx="100" cy="8" r="10" fill="none" stroke="#c9a84c" stroke-width="1" opacity=".4"/>
+  </svg>
+
+  <div class="hero-content">
+    <img src="lara-logo.jpg" alt="Lake Amateur Radio Association logo" class="hero-logo" />
+    <p class="hero-eyebrow">Lake County's Amateur Radio Fellowship</p>
+    <h2>
+      Built on Passion.<br>
+      <em>Powered by Radio.</em>
+    </h2>
+    <p class="hero-sub">
+      Since 1952, LARA has united amateur radio operators across Lake County, Florida. 
+      From a 160-foot antenna farm to full emergency communications capability — 
+      this is where hams connect.
+    </p>
+    <div class="hero-actions">
+      <a href="#membership" class="btn-primary">Join the Club</a>
+      <a href="#new-ham" class="btn-outline">New to Ham Radio?</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">Licensed Members</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">73</div>
+      <div class="stat-label">Years & Counting</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">TOP 10</div>
+      <div class="stat-label">Field Day Nationally</div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section class="history-section" id="history">
+  <div class="section-label">Our Story</div>
+  <h2 class="section-title">Seven Decades on the Air</h2>
+  <p class="history-intro">What began as a small gathering of radio enthusiasts in Leesburg has grown into one of Central Florida's most respected amateur radio organizations. Here's how we got here.</p>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-year">1952</div>
+      <div class="timeline-title">The Club is Founded</div>
+      <p class="timeline-desc">A group of amateur radio operators in Lake County, Florida comes together to form the Lake Amateur Radio Association. Meeting out of a member's home in Leesburg, the early club focused on HF operating and building camaraderie among local hams.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1960s – 70s</div>
+      <div class="timeline-title">Growth & Infrastructure</div>
+      <p class="timeline-desc">LARA expands its membership and establishes its first repeater infrastructure, giving Lake County hams reliable local communication on VHF. The club becomes a fixture in the community, participating in public service events across the region.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1990</div>
+      <div class="timeline-title">QCWA Chapter Chartered</div>
+      <p class="timeline-desc">LARA charters an affiliated Quarter Century Wireless Association (QCWA) chapter, recognizing members with 25 or more years of licensed operating experience — a testament to the depth of expertise within the club.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2000s</div>
+      <div class="timeline-title">ARES & Emergency Communications</div>
+      <p class="timeline-desc">LARA formalizes its emergency communications program, forming LCARES under the callsign N4FLA. The club builds out its EmComm trailer — a fully-equipped mobile communications platform deployed during hurricanes and regional emergencies.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2010s</div>
+      <div class="timeline-title">Merger & Modern Era</div>
+      <p class="timeline-desc">Following a merger with the Lake Repeater Association, LARA grows to over 150 licensed members. The club expands into digital modes — DMR, D-STAR, Winlink, FT-8 — and earns recognition as an ARRL Special Service Club.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Today</div>
+      <div class="timeline-title">Top 10 Nationally in Field Day</div>
+      <p class="timeline-desc">LARA operates from a 160-foot antenna farm near Leesburg with four fully-equipped HF/VHF/UHF stations. The club consistently places in the top 10 stations nationally during ARRL Field Day and remains a cornerstone of amateur radio in Central Florida.</p>
+    </div>
+  </div>
+  <div class="history-callout reveal">
+    <p>"Ham radio isn't just a hobby here — it's a calling. LARA has always been about bringing people together through the magic of radio, and that hasn't changed in 70 years."</p>
+    <cite>— A longtime LARA member</cite>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- QUICK STRIP -->
+<div class="quick-strip">
+  <div class="quick-item">
+    <div class="quick-icon">📅</div>
+    <div class="quick-text">
+      <strong>General Meeting</strong>
+      <span>3rd Saturday · 10:00 AM · Clubhouse</span>
+    </div>
+  </div>
+  <div class="quick-item">
+    <div class="quick-icon">🍽️</div>
+    <div class="quick-text">
+      <strong>Monthly Luncheon</strong>
+      <span>2nd Wednesday · 11 AM · Fish Camp Lake Eustis</span>
+    </div>
+  </div>
+  <div class="quick-item">
+    <div class="quick-icon">🎓</div>
+    <div class="quick-text">
+      <strong>VE Test Sessions</strong>
+      <span>8:00 AM before monthly meetings</span>
+    </div>
+  </div>
+  <div class="quick-item">
+    <div class="quick-icon">🔧</div>
+    <div class="quick-text">
+      <strong>Tech Saturdays</strong>
+      <span>1st Saturday · 10:00 AM · Clubhouse</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who We Are</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="section-title">The Heart of Amateur<br>Radio in Lake County</h2>
+      <div class="about-body">
+        <p>In 1952, a small group of ham radio enthusiasts gathered in Leesburg, Florida and founded what would become one of the region's most respected amateur radio clubs. After merging with the Lake Repeater Association, <strong>LARA has grown into a member-based organization of over 150 licensed operators.</strong></p>
+        <p>As a Florida and nationally recognized <strong>501(c)(3) nonprofit</strong>, we are an ARRL affiliated and special service club. We sponsor a full Amateur Radio Emergency Service (ARES) team and an affiliated Quarter Century Wireless Association (QCWA) chapter chartered since 1990.</p>
+        <p>Our Field Day team consistently ranks in the <strong>top 10 stations nationally</strong>. Our members operate POTA activations, support community events, and stand ready when emergencies strike.</p>
+      </div>
+      <div class="about-capabilities">
+        <div class="cap-item">
+          <div class="cap-title">📡 Antenna Farm</div>
+          <div class="cap-desc">160-foot tower with extensive multi-band antenna array near Leesburg, FL</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-title">⚡ Operating Positions</div>
+          <div class="cap-desc">4 fully-equipped HF/VHF/UHF stations with emergency generator power</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-title">📻 Operating Modes</div>
+          <div class="cap-desc">WINLINK, FT-8, Echolink, P25, DMR, D-STAR, and more</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-title">🚨 EmComm Trailer</div>
+          <div class="cap-desc">Fully-outfitted communications trailer deployed for hurricanes and public events</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="facility-visual">
+      <svg class="facility-tower-svg" width="200" height="340" viewBox="0 0 200 340" fill="none">
+        <line x1="100" y1="0" x2="10" y2="340" stroke="#c9a84c" stroke-width="1.5"/>
+        <line x1="100" y1="0" x2="190" y2="340" stroke="#c9a84c" stroke-width="1.5"/>
+        <line x1="100" y1="0" x2="100" y2="340" stroke="#c9a84c" stroke-width="1" stroke-dasharray="5 4"/>
+        <line x1="74" y1="68" x2="126" y2="68" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="58" y1="136" x2="142" y2="136" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="40" y1="204" x2="160" y2="204" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="24" y1="272" x2="176" y2="272" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="55" y1="40" x2="145" y2="40" stroke="#c9a84c" stroke-width="2"/>
+        <line x1="45" y1="28" x2="155" y2="28" stroke="#c9a84c" stroke-width="1"/>
+        <circle cx="100" cy="6" r="4" fill="#c9a84c" opacity=".5"/>
+      </svg>
+      <div class="facility-label">
+        <span class="callsign-big">K4FC</span>
+        <p>Leesburg, Florida</p>
+      </div>
+      <div class="facility-badge">📷 Photo Gallery →</div>
+      <div class="photo-placeholder-note">[ Clubhouse & antenna farm photos here ]</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BAND CONDITIONS -->
+<section id="conditions">
+  <div class="section-label">HF Propagation</div>
+  <h2 class="section-title">Live Band Conditions</h2>
+  <p class="section-sub">Real-time solar indices and HF band conditions for Central Florida. Data sourced from hamqsl.com.</p>
+
+  <div class="solar-indices reveal" id="solarIndices">
+    <div class="solar-card" id="card-sfi">
+      <div class="solar-card-value" id="val-sfi">—</div>
+      <div class="solar-card-label">Solar Flux</div>
+      <div class="solar-card-desc">SFI</div>
+    </div>
+    <div class="solar-card" id="card-sn">
+      <div class="solar-card-value" id="val-sn">—</div>
+      <div class="solar-card-label">Sunspot No.</div>
+      <div class="solar-card-desc">SN</div>
+    </div>
+    <div class="solar-card" id="card-aindex">
+      <div class="solar-card-value" id="val-aindex">—</div>
+      <div class="solar-card-label">A-Index</div>
+      <div class="solar-card-desc">Geomagnetic</div>
+    </div>
+    <div class="solar-card" id="card-kindex">
+      <div class="solar-card-value" id="val-kindex">—</div>
+      <div class="solar-card-label">K-Index</div>
+      <div class="solar-card-desc">Current</div>
+    </div>
+  </div>
+
+  <div class="conditions-widget reveal">
+    <div class="conditions-header">
+      <span class="conditions-title">HF Band Status</span>
+      <span class="conditions-live"><span class="live-dot"></span><span id="conditions-updated">Loading...</span></span>
+    </div>
+    <div class="bands-grid" id="bandsGrid">
+      <!-- populated by JS -->
+    </div>
+    <div class="conditions-note" id="conditionsNote">Fetching live data from hamqsl.com...</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NEW TO HAM -->
+<section class="new-ham" id="new-ham">
+  <div class="section-label">Getting Started</div>
+  <h2 class="section-title">New to Ham Radio?</h2>
+  <p class="section-sub">No experience needed. LARA welcomes beginners and helps you get licensed, get on the air, and get connected to a community that lasts.</p>
+  <div class="ham-cards">
+    <div class="ham-card reveal">
+      <div class="ham-card-num">01</div>
+      <div class="ham-card-icon">📖</div>
+      <h3>Learn the Basics</h3>
+      <p>Ham radio opens up global communication, emergency preparedness, and technical experimentation. No experience or Morse code required to get started.</p>
+      <a href="#" class="card-link">What is ham radio? →</a>
+    </div>
+    <div class="ham-card reveal reveal-delay-1">
+      <div class="ham-card-num">02</div>
+      <div class="ham-card-icon">📝</div>
+      <h3>Get Licensed</h3>
+      <p>There are three license classes: Technician, General, and Amateur Extra. LARA's Volunteer Examiner (VE) team holds free test sessions monthly — right at the clubhouse.</p>
+      <a href="#" class="card-link">Register for a test →</a>
+    </div>
+    <div class="ham-card reveal reveal-delay-2">
+      <div class="ham-card-num">03</div>
+      <div class="ham-card-icon">🤝</div>
+      <h3>Join the Club</h3>
+      <p>Come to a meeting — no license required to visit. Meet the members, see the station, and decide if LARA is the right home for your ham radio journey.</p>
+      <a href="#membership" class="card-link">Membership info →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="section-label">What's Coming Up</div>
+  <h2 class="section-title">Upcoming Events</h2>
+  <p class="section-sub">Meetings, luncheons, test sessions, and activations — there's always something happening at LARA.</p>
+  <div class="events-layout">
+    <div class="event-list">
+      <div class="event-item reveal">
+        <div class="event-date-box">
+          <span class="month">APR</span>
+          <span class="day">05</span>
+        </div>
+        <div class="event-info">
+          <h4>Tech Saturday</h4>
+          <p>Topic: FT-8 Digital Modes — Setup, operation, and contest strategies. Bring your laptop if you have one.</p>
+          <span class="event-tag tag-meeting">Tech Saturday</span>
+        </div>
+      </div>
+      <div class="event-item reveal reveal-delay-1">
+        <div class="event-date-box">
+          <span class="month">APR</span>
+          <span class="day">09</span>
+        </div>
+        <div class="event-info">
+          <h4>Monthly Luncheon</h4>
+          <p>Fish Camp Lake Eustis · 901 Lakeshore Blvd, Tavares · 11:00 AM. All members and guests welcome.</p>
+          <span class="event-tag tag-lunch">Luncheon</span>
+        </div>
+      </div>
+      <div class="event-item reveal reveal-delay-2">
+        <div class="event-date-box">
+          <span class="month">APR</span>
+          <span class="day">19</span>
+        </div>
+        <div class="event-info">
+          <h4>VE Exam Session</h4>
+          <p>Testing begins at 8:00 AM before the general meeting. Pre-registration required. All classes welcome.</p>
+          <span class="event-tag tag-exam">License Exam</span>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="event-date-box">
+          <span class="month">APR</span>
+          <span class="day">19</span>
+        </div>
+        <div class="event-info">
+          <h4>General Membership Meeting</h4>
+          <p>Monthly club meeting at the LARA Clubhouse. 10:00 AM. All members and visitors welcome.</p>
+          <span class="event-tag tag-meeting">Meeting</span>
+        </div>
+      </div>
+      <div class="event-item reveal reveal-delay-1">
+        <div class="event-date-box">
+          <span class="month">MAY</span>
+          <span class="day">03</span>
+        </div>
+        <div class="event-info">
+          <h4>POTA Activation – Lake Louisa State Park</h4>
+          <p>Parks on the Air activation. Operators needed. Contact the club for details and to sign up.</p>
+          <span class="event-tag tag-pota">POTA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINI CALENDAR -->
+    <div>
+      <div class="calendar-widget reveal">
+        <div class="cal-header">
+          <h4>April 2026</h4>
+          <span>← View Full Calendar →</span>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div>
+          <div class="cal-day-name">Tu</div><div class="cal-day-name">We</div>
+          <div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div>
+          <div class="cal-day-name">Sa</div>
+          <!-- row 1 -->
+          <div class="cal-day empty"></div><div class="cal-day empty"></div>
+          <div class="cal-day today">4</div>
+          <div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div>
+          <div class="cal-day event">5</div>
+          <!-- row 2 -->
+          <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div>
+          <div class="cal-day event">9</div>
+          <div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+          <!-- row 3 -->
+          <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div>
+          <div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div>
+          <div class="cal-day event">19</div>
+          <!-- row 4 -->
+          <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div>
+          <div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div>
+          <div class="cal-day">26</div>
+          <!-- row 5 -->
+          <div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div>
+          <div class="cal-day">30</div>
+          <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div>
+        </div>
+      </div>
+      <div style="margin-top:20px; padding:20px 24px; background:rgba(18,34,64,.5); border:1px solid rgba(201,168,76,.12);">
+        <p style="font-family:'Share Tech Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px;">📍 Clubhouse Location</p>
+        <p style="font-size:.82rem; color:var(--offwhite); font-weight:300; line-height:1.7;">LARA Clubhouse<br>Near Leesburg, Florida<br><span style="color:var(--muted);">Address provided to members upon joining</span></p>
+        <a href="#" style="display:inline-block; margin-top:12px; font-family:'Share Tech Mono',monospace; font-size:.65rem; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; text-decoration:none;">Get Directions →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REPEATERS -->
+<section class="repeater-section" id="repeaters">
+  <div class="section-label">On the Air</div>
+  <h2 class="section-title">LARA Repeater Network</h2>
+  <p class="section-sub">Wide-area coverage across Lake County with links to the East Coast Reflector and DMR networks. All repeaters are open to licensed amateurs.</p>
+  <div class="repeater-table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Frequency</th>
+          <th>Offset</th>
+          <th>PL / Access</th>
+          <th>Mode</th>
+          <th>Links / Notes</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Frequency">147.195 MHz</td>
+          <td data-label="Offset">+600 kHz</td>
+          <td data-label="PL / Access">100.0 Hz</td>
+          <td data-label="Mode">FM / Analog</td>
+          <td data-label="Links">East Coast Reflector Link</td>
+          <td data-label="Status"><span class="rep-status"><span class="rep-dot online"></span> Online</span></td>
+        </tr>
+        <tr>
+          <td data-label="Frequency">443.825 MHz</td>
+          <td data-label="Offset">+5 MHz</td>
+          <td data-label="PL / Access">100.0 Hz</td>
+          <td data-label="Mode">FM / Analog</td>
+          <td data-label="Links">—</td>
+          <td data-label="Status"><span class="rep-status"><span class="rep-dot online"></span> Online</span></td>
+        </tr>
+        <tr>
+          <td data-label="Frequency">444.250 MHz</td>
+          <td data-label="Offset">+5 MHz</td>
+          <td data-label="PL / Access">Color Code 1</td>
+          <td data-label="Mode">DMR</td>
+          <td data-label="Links">DMR-SE Network</td>
+          <td data-label="Status"><span class="rep-status"><span class="rep-dot linked"></span> Linked</span></td>
+        </tr>
+        <tr>
+          <td data-label="Frequency">444.500 MHz</td>
+          <td data-label="Offset">+5 MHz</td>
+          <td data-label="PL / Access">Color Code 1</td>
+          <td data-label="Mode">DMR</td>
+          <td data-label="Links">DMR-SE / Served Agencies</td>
+          <td data-label="Status"><span class="rep-status"><span class="rep-dot linked"></span> Linked</span></td>
+        </tr>
+        <tr>
+          <td data-label="Frequency">444.750 MHz</td>
+          <td data-label="Offset">+5 MHz</td>
+          <td data-label="PL / Access">Color Code 1</td>
+          <td data-label="Mode">DMR</td>
+          <td data-label="Links">DMR-SE Network</td>
+          <td data-label="Status"><span class="rep-status"><span class="rep-dot online"></span> Online</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px; font-family:'Share Tech Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.08em;">
+    Full frequency plan → <a href="#" style="color:var(--gold); text-decoration:none;">Download LCARES Frequency Plan (PDF)</a>
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARES -->
+<div class="ares-strip" id="ares">
+  <div class="ares-body">
+    <div class="section-label">Emergency Communications</div>
+    <h2 class="section-title">LCARES – When It<br>Matters Most</h2>
+    <p>LARA has long prided itself on community service and emergency preparedness. LCARES — home of amateur station <strong style="color:var(--offwhite);">N4FLA</strong> — fields both ARES and AUXCOMM trained, vetted volunteers ready to support served agencies during any emergency.</p>
+    <p>Our fully-outfitted <strong style="color:var(--offwhite);">Emergency Communications Trailer</strong> has been deployed in support of hurricane response and major community events across the region.</p>
+    <a href="#" class="btn-outline" style="margin-top:8px; display:inline-block;">Learn About ARES →</a>
+  </div>
+  <div class="ares-side">
+    <div class="ares-cap">
+      <div class="ares-cap-icon">🔴</div>
+      <div class="ares-cap-text">
+        <strong>EmComm Trailer</strong>
+        <span>Fully equipped, deployable communications platform for field operations</span>
+      </div>
+    </div>
+    <div class="ares-cap">
+      <div class="ares-cap-icon">🛡️</div>
+      <div class="ares-cap-text">
+        <strong>AUXCOMM Trained</strong>
+        <span>Vetted volunteers credentialed to operate with served government agencies</span>
+      </div>
+    </div>
+    <div class="ares-cap">
+      <div class="ares-cap-icon">📡</div>
+      <div class="ares-cap-text">
+        <strong>Multi-Mode Capability</strong>
+        <span>HF, VHF/UHF, WINLINK, P25, DMR — full spectrum coverage</span>
+      </div>
+    </div>
+    <div class="ares-cap">
+      <div class="ares-cap-icon">🌀</div>
+      <div class="ares-cap-text">
+        <strong>Hurricane Ready</strong>
+        <span>Activated and deployed during regional storm events and public emergencies</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBERSHIP CTA -->
+<section class="membership-cta" id="membership">
+  <div class="section-label">Join the Fellowship</div>
+  <h2 class="section-title">Become a Member of LARA</h2>
+  <p class="cta-sub">Whether you're a newly licensed Technician or a seasoned Extra class operator, LARA has a place for you. Your membership supports a community 73 years in the making.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-primary" onclick="openModal('modalApply'); return false;">Apply for Membership</a>
+    <a href="#" class="btn-outline" onclick="openModal('modalDues'); return false;">Pay Dues Online</a>
+  </div>
+  <div class="membership-tiers">
+    <div class="tier">
+      <div class="tier-name">Annual</div>
+      <div class="tier-price">$75</div>
+      <span class="tier-period">per year</span>
+      <div class="tier-feature">Full voting membership</div>
+      <div class="tier-feature">Access to clubhouse & station</div>
+      <div class="tier-feature">Club newsletter & announcements</div>
+    </div>
+    <div class="tier featured">
+      <div class="tier-name">⭐ Life Member</div>
+      <div class="tier-price">$800</div>
+      <span class="tier-period">one-time</span>
+      <div class="tier-feature">Permanent membership</div>
+      <div class="tier-feature">All annual member benefits</div>
+      <div class="tier-feature">Recognition at club events</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-badge">
+        <span class="callsign">K4FC</span>
+        <span class="est">EST 1952</span>
+      </div>
+      <p>Lake Amateur Radio Association — serving the amateur radio community of Lake County, Florida for over 70 years.</p>
+      <p style="margin-top:10px;">
+        <a href="mailto:info@k4fc.org" style="color:var(--gold); font-family:'Share Tech Mono',monospace; font-size:.7rem; text-decoration:none; letter-spacing:.06em;">info@k4fc.org</a>
+      </p>
+    </div>
+    <div class="footer-col">
+      <h5>Club Info</h5>
+      <a href="#">Board of Directors</a>
+      <a href="#">Clubhouse</a>
+      <a href="#">Our Engineers</a>
+      <a href="#">Corporate Documents</a>
+      <a href="#">Silent Key Committee</a>
+    </div>
+    <div class="footer-col">
+      <h5>Activities</h5>
+      <a href="#">ARRL Field Day</a>
+      <a href="#">POTA Activations</a>
+      <a href="#">JOTA</a>
+      <a href="#">QCWA Chapter</a>
+      <a href="#">LARA Store</a>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <a href="#">Repeater Info</a>
+      <a href="#">ARES / LCARES</a>
+      <a href="#">ARES Nets</a>
+      <a href="#">Frequency Plan (PDF)</a>
+      <a href="#">Donate to LARA</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 LAKE AMATEUR RADIO ASSOCIATION · K4FC · LEESBURG, FL · 501(c)(3) NONPROFIT · ARRL AFFILIATED</p>
+    <div class="footer-social">
+      <a href="#" class="social-btn" title="Facebook">f</a>
+      <a href="#" class="social-btn" title="YouTube">▶</a>
+      <a href="#" class="social-btn" title="Email">✉</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- APPLY FOR MEMBERSHIP MODAL -->
+<div class="modal-overlay" id="modalApply">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modalApply')" aria-label="Close">×</button>
+    <div class="modal-eyebrow">Membership Application</div>
+    <div class="modal-title">Join LARA</div>
+    <div id="applyTierBadge" class="modal-tier-badge">
+      <span class="tier-badge-name">Annual Member</span>
+      <span class="tier-badge-price">$75 / year</span>
+    </div>
+    <div class="modal-divider"></div>
+    <div class="modal-form-body" id="applyFormBody">
+      <div class="form-row-half">
+        <div class="form-row">
+          <label>First Name</label>
+          <input type="text" placeholder="John" />
+        </div>
+        <div class="form-row">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@email.com" />
+      </div>
+      <div class="form-row">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="(407) 555-0100" />
+      </div>
+      <div class="form-row-half">
+        <div class="form-row">
+          <label>Callsign <span style="font-weight:300;text-transform:none;letter-spacing:0">(if licensed)</span></label>
+          <input type="text" placeholder="W4XYZ" />
+          <div class="form-hint">Leave blank if not yet licensed</div>
+        </div>
+        <div class="form-row">
+          <label>License Class</label>
+          <select>
+            <option value="">Select one</option>
+            <option>Not yet licensed</option>
+            <option>Technician</option>
+            <option>General</option>
+            <option>Amateur Extra</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Membership Type</label>
+        <select id="applyMemberType" onchange="updateTierBadge(this.value)">
+          <option value="annual">Annual — $75/year</option>
+          <option value="life">Life Member — $800 one-time</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>How did you hear about LARA?</label>
+        <select>
+          <option value="">Select one</option>
+          <option>Friend or fellow ham</option>
+          <option>ARRL / club directory</option>
+          <option>Social media</option>
+          <option>Repeater / on the air</option>
+          <option>Web search</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Anything you'd like us to know?</label>
+        <textarea placeholder="Interests, experience, questions…"></textarea>
+      </div>
+      <button class="modal-submit" onclick="submitForm('applyFormBody', 'applySuccess')">Submit Application →</button>
+    </div>
+    <div class="modal-success" id="applySuccess">
+      <div class="success-icon">📡</div>
+      <h3>Application Received!</h3>
+      <p>Thanks for applying to join LARA. A club officer will be in touch within a few days to confirm your membership and arrange dues payment. 73!</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAY DUES MODAL -->
+<div class="modal-overlay" id="modalDues">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modalDues')" aria-label="Close">×</button>
+    <div class="modal-eyebrow">Dues Renewal</div>
+    <div class="modal-title">Pay Your Dues</div>
+    <div class="modal-divider"></div>
+    <div class="modal-form-body" id="duesFormBody">
+      <div class="form-row-half">
+        <div class="form-row">
+          <label>First Name</label>
+          <input type="text" placeholder="John" />
+        </div>
+        <div class="form-row">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Callsign</label>
+        <input type="text" placeholder="W4XYZ" />
+      </div>
+      <div class="form-row">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@email.com" />
+      </div>
+      <div class="form-row">
+        <label>Membership Type</label>
+        <select>
+          <option value="annual">Annual Renewal — $75</option>
+          <option value="life">Upgrade to Life Member — $800</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Payment Method</label>
+        <select>
+          <option>Pay at next meeting (cash or check)</option>
+          <option>PayPal / Venmo (instructions will be emailed)</option>
+          <option>Mail a check</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <textarea placeholder="Any questions or comments for the treasurer…"></textarea>
+      </div>
+      <button class="modal-submit" onclick="submitForm('duesFormBody', 'duesSuccess')">Submit →</button>
+    </div>
+    <div class="modal-success" id="duesSuccess">
+      <div class="success-icon">✅</div>
+      <h3>Got It!</h3>
+      <p>Your dues request has been received. The club treasurer will follow up with payment instructions. See you at the next meeting!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Offset hero so it clears the fixed topbar + nav
+  function setHeroOffset() {
+    var topbar = document.querySelector('.topbar');
+    var nav = document.querySelector('nav');
+    var hero = document.querySelector('.hero');
+    if (topbar && nav && hero) {
+      var offset = topbar.getBoundingClientRect().height + nav.getBoundingClientRect().height;
+      hero.style.paddingTop = (offset + 16) + 'px';
+    }
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(setHeroOffset);
+  } else {
+    window.addEventListener('load', setHeroOffset);
+  }
+  setHeroOffset();
+  window.addEventListener('resize', setHeroOffset);
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var navMobile = document.getElementById('navMobile');
+  navToggle.addEventListener('click', function() {
+    var open = navMobile.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  function closeMobileNav() {
+    navMobile.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', false);
+  }
+  document.addEventListener('click', function(e) {
+    if (!navMobile.contains(e.target) && !navToggle.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
+  // Modal open/close
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal(overlay.id);
+    });
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(function(m) {
+        closeModal(m.id);
+      });
+    }
+  });
+
+  // Update tier badge when membership type changes
+  function updateTierBadge(val) {
+    var badge = document.getElementById('applyTierBadge');
+    if (val === 'life') {
+      badge.innerHTML = '<span class="tier-badge-name">Life Member</span><span class="tier-badge-price">$800 one-time</span>';
+    } else {
+      badge.innerHTML = '<span class="tier-badge-name">Annual Member</span><span class="tier-badge-price">$75 / year</span>';
+    }
+  }
+
+  // Form submit → show success
+  function submitForm(formId, successId) {
+    document.getElementById(formId).style.display = 'none';
+    document.getElementById(successId).classList.add('show');
+  }
+
+  // ── LIVE BAND CONDITIONS ──
+  const BANDS = [
+    { key: 'meter80',  label: '80m' },
+    { key: 'meter40',  label: '40m' },
+    { key: 'meter30',  label: '30m' },
+    { key: 'meter20',  label: '20m' },
+    { key: 'meter17',  label: '17m' },
+    { key: 'meter15',  label: '15m' },
+    { key: 'meter12',  label: '12m' },
+    { key: 'meter10',  label: '10m' },
+    { key: 'meter6',   label: '6m'  },
+  ];
+
+  function statusClass(val) {
+    if (!val) return 'status-closed';
+    const v = val.toLowerCase();
+    if (v === 'good' || v === 'excellent') return 'status-good';
+    if (v === 'fair')   return 'status-fair';
+    if (v === 'poor')   return 'status-poor';
+    return 'status-closed';
+  }
+
+  function kIndexClass(k) {
+    const n = parseInt(k);
+    if (n <= 2) return 'good';
+    if (n <= 4) return 'warn';
+    return 'bad';
+  }
+
+  function aIndexClass(a) {
+    const n = parseInt(a);
+    if (n <= 7)  return 'good';
+    if (n <= 20) return 'warn';
+    return 'bad';
+  }
+
+  function renderFallback() {
+    const grid = document.getElementById('bandsGrid');
+    const fallback = [
+      { label:'80m', status:'Fair' }, { label:'40m', status:'Good' },
+      { label:'30m', status:'Good' }, { label:'20m', status:'Excellent' },
+      { label:'17m', status:'Fair' }, { label:'15m', status:'Fair' },
+      { label:'12m', status:'Poor' }, { label:'10m', status:'Poor' },
+      { label:'6m',  status:'Closed' },
+    ];
+    grid.innerHTML = fallback.map(function(b) {
+      return '<div class="band-cell"><div class="band-name">'+b.label+'</div>'+
+             '<div class="band-status '+statusClass(b.status)+'">'+b.status+'</div></div>';
+    }).join('');
+    document.getElementById('conditionsNote').textContent =
+      'Live data unavailable — showing typical daytime conditions. Refresh to retry.';
+    document.getElementById('conditions-updated').textContent = 'Fallback data';
+    ['sfi','sn','aindex','kindex'].forEach(function(id) {
+      document.getElementById('val-'+id).textContent = '—';
+    });
+  }
+
+  async function fetchBandConditions() {
+    try {
+      const proxy = 'https://corsproxy.io/?';
+      const url = 'https://www.hamqsl.com/solarxml.php';
+      const res = await fetch(proxy + encodeURIComponent(url));
+      if (!res.ok) throw new Error('fetch failed');
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'text/xml');
+
+      const get = function(tag) {
+        const el = xml.querySelector(tag);
+        return el ? el.textContent.trim() : '—';
+      };
+
+      const sfi    = get('solarflux');
+      const sn     = get('sunspots');
+      const aindex = get('aindex');
+      const kindex = get('kindex');
+      const updated = get('updated');
+
+      document.getElementById('val-sfi').textContent    = sfi;
+      document.getElementById('val-sn').textContent     = sn;
+      document.getElementById('val-aindex').textContent = aindex;
+      document.getElementById('val-kindex').textContent = kindex;
+
+      document.getElementById('card-kindex').className =
+        'solar-card ' + kIndexClass(kindex);
+      document.getElementById('card-aindex').className =
+        'solar-card ' + aIndexClass(aindex);
+
+      const grid = document.getElementById('bandsGrid');
+      const bandEls = BANDS.map(function(b) {
+        const dayEl   = xml.querySelector('band[name="'+b.key+'"] > day');
+        const nightEl = xml.querySelector('band[name="'+b.key+'"] > night');
+        const day   = dayEl   ? dayEl.textContent.trim()   : '—';
+        const night = nightEl ? nightEl.textContent.trim() : '—';
+        const display = day !== '—' ? day : night;
+        return '<div class="band-cell">'+
+          '<div class="band-name">'+b.label+'</div>'+
+          '<div class="band-status '+statusClass(display)+'">'+display+'</div>'+
+        '</div>';
+      }).join('');
+      grid.innerHTML = bandEls;
+
+      document.getElementById('conditions-updated').textContent =
+        'Updated ' + (updated || 'recently');
+      document.getElementById('conditionsNote').textContent =
+        'SFI: '+sfi+' · SN: '+sn+' · A-Index: '+aindex+' · K-Index: '+kindex+
+        ' · Source: hamqsl.com / N0NBH';
+
+    } catch(e) {
+      renderFallback();
+    }
+  }
+
+  fetchBandConditions();
+  setInterval(fetchBandConditions, 5 * 60 * 1000);
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
