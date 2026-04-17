@@ -744,106 +744,6 @@
     font-size:.78rem; color:var(--muted); font-weight:300;
   }
  
-  .conditions-widget {
-    background: var(--navy2);
-    border: 1px solid rgba(201,168,76,.15);
-    border-radius: 3px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  .conditions-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1.25rem; padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(201,168,76,.1);
-  }
-  .conditions-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .75rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
-  }
-  .conditions-live {
-    display: flex; align-items: center; gap: 6px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .7rem; color: var(--green);
-  }
-  .live-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s infinite;
-  }
-  .bands-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: .75rem;
-  }
-  .band-cell {
-    background: var(--navy);
-    border: 1px solid rgba(201,168,76,.12);
-    border-radius: 3px;
-    padding: .75rem;
-    text-align: center;
-  }
-  .band-name {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .75rem; color: var(--muted); margin-bottom: .4rem;
-  }
-  .band-status {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: .95rem; letter-spacing: .05em; text-transform: uppercase;
-  }
-  .status-good    { color: var(--green); }
-  .status-fair    { color: var(--amber); }
-  .status-poor    { color: var(--red); }
-  .status-closed  { color: rgba(143,163,184,.4); }
-  .conditions-note {
-    font-size: .75rem; color: var(--muted);
-    margin-top: 1rem; padding-top: 1rem;
-    border-top: 1px solid rgba(201,168,76,.1);
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: .04em;
-  }
- 
-  /* ── BAND CONDITIONS WIDGET ── */
-  .solar-indices {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .solar-card {
-    background: var(--navy);
-    border: 1px solid rgba(201,168,76,.2);
-    border-radius: 4px;
-    padding: 14px 16px;
-    text-align: center;
-    transition: border-color .2s;
-  }
-  .solar-card:hover { border-color: rgba(201,168,76,.5); }
-  .solar-card-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    color: var(--gold2);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .solar-card-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .62rem;
-    color: var(--muted);
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
-  .solar-card-desc {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .58rem;
-    color: rgba(143,163,184,.5);
-    letter-spacing: .06em;
-    margin-top: 3px;
-  }
-  .solar-card.good .solar-card-value { color: var(--green); }
-  .solar-card.warn .solar-card-value { color: var(--amber); }
-  .solar-card.bad  .solar-card-value { color: var(--red); }
- 
   /* ── MEMBERSHIP CTA ── */
   .membership-cta {
     text-align:center;
@@ -865,8 +765,8 @@
   }
   .cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
   .membership-tiers {
-    display:grid; grid-template-columns:repeat(2,1fr);
-    gap:16px; max-width:500px; margin:48px auto 0;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:16px; max-width:700px; margin:48px auto 0;
     position:relative; z-index:2;
   }
   .tier {
@@ -901,160 +801,7 @@
     content:'–'; position:absolute; left:0; color:var(--gold);
   }
  
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(6,16,30,0.88);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-  }
-  .modal-overlay.open { display: flex; }
- 
-  .modal {
-    background: var(--navy2);
-    border: 1px solid rgba(201,168,76,.3);
-    border-top: 3px solid var(--gold);
-    border-radius: 4px;
-    width: 100%;
-    max-width: 520px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 40px;
-    position: relative;
-    animation: modalIn .25s ease both;
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
- 
-  .modal-close {
-    position: absolute; top: 16px; right: 20px;
-    background: none; border: none;
-    color: var(--muted); font-size: 1.4rem;
-    cursor: pointer; line-height: 1;
-    transition: color .2s;
-  }
-  .modal-close:hover { color: var(--gold); }
- 
-  .modal-eyebrow {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .68rem; letter-spacing: .2em;
-    color: var(--amber); text-transform: uppercase;
-    margin-bottom: 8px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .modal-eyebrow::before {
-    content: ''; display: block;
-    width: 16px; height: 1px; background: var(--amber);
-  }
- 
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem; letter-spacing: .04em;
-    color: var(--offwhite); line-height: 1;
-    margin-bottom: 24px;
-  }
- 
-  .modal-divider {
-    height: 1px;
-    background: linear-gradient(90deg, rgba(201,168,76,.3), transparent);
-    margin-bottom: 24px;
-  }
- 
-  .form-row { margin-bottom: 18px; }
-  .form-row label {
-    display: block;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .65rem; letter-spacing: .12em;
-    color: var(--muted); text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .form-row input,
-  .form-row select,
-  .form-row textarea {
-    width: 100%;
-    background: rgba(11,26,46,.8);
-    border: 1px solid rgba(201,168,76,.2);
-    border-radius: 3px;
-    padding: 10px 14px;
-    color: var(--offwhite);
-    font-family: 'Source Serif 4', serif;
-    font-size: .9rem;
-    outline: none;
-    transition: border-color .2s;
-    appearance: none;
-  }
-  .form-row input:focus,
-  .form-row select:focus,
-  .form-row textarea:focus { border-color: var(--gold); }
-  .form-row textarea { resize: vertical; min-height: 80px; }
-  .form-row select { cursor: pointer; }
- 
-  .form-row-half {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  }
- 
-  .form-hint {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .6rem; color: var(--muted);
-    letter-spacing: .06em; margin-top: 5px;
-  }
- 
-  .modal-tier-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(201,168,76,.1);
-    border: 1px solid rgba(201,168,76,.25);
-    padding: 8px 16px; border-radius: 3px;
-    margin-bottom: 24px;
-  }
-  .modal-tier-badge .tier-badge-name {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .72rem; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--gold);
-  }
-  .modal-tier-badge .tier-badge-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem; color: var(--gold2);
-  }
- 
-  .modal-submit {
-    width: 100%; margin-top: 8px;
-    background: var(--gold);
-    color: var(--navy);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: .8rem; letter-spacing: .12em;
-    text-transform: uppercase; font-weight: 700;
-    padding: 14px;
-    border: none; border-radius: 3px;
-    cursor: pointer;
-    transition: background .2s, transform .1s;
-  }
-  .modal-submit:hover { background: var(--gold2); transform: translateY(-1px); }
- 
-  .modal-success {
-    display: none;
-    text-align: center;
-    padding: 20px 0;
-  }
-  .modal-success.show { display: block; }
-  .modal-success .success-icon {
-    font-size: 2.5rem; margin-bottom: 16px;
-  }
-  .modal-success h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem; color: var(--gold);
-    letter-spacing: .04em; margin-bottom: 10px;
-  }
-  .modal-success p {
-    font-size: .9rem; color: var(--muted);
-    font-weight: 300; line-height: 1.7;
-  }
-  .modal-form-body { }
+  /* ── FOOTER ── */
   footer {
     background:var(--navy2);
     border-top:1px solid rgba(201,168,76,.15);
@@ -1201,7 +948,7 @@
     .ares-body { padding: 40px 24px; }
     .ares-side { padding: 32px 24px; border-left: none; border-top: 1px solid rgba(217,79,61,.15); }
  
-    .membership-tiers { grid-template-columns: 1fr; max-width: 320px; }
+    .membership-tiers { grid-template-columns: 1fr; max-width: 360px; }
     .membership-cta { padding: 64px 24px; }
  
     footer { padding: 40px 24px; }
@@ -1291,7 +1038,6 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#history">History</a></li>
-    <li><a href="#conditions">Bands</a></li>
     <li><a href="#new-ham">New to Ham?</a></li>
     <li><a href="#events">Events</a></li>
     <li><a href="#repeaters">Repeaters</a></li>
@@ -1307,7 +1053,6 @@
 <div class="nav-mobile" id="navMobile">
   <a href="#about" onclick="closeMobileNav()">About</a>
   <a href="#history" onclick="closeMobileNav()">History</a>
-  <a href="#conditions" onclick="closeMobileNav()">Band Conditions</a>
   <a href="#new-ham" onclick="closeMobileNav()">New to Ham?</a>
   <a href="#events" onclick="closeMobileNav()">Events</a>
   <a href="#repeaters" onclick="closeMobileNav()">Repeaters</a>
@@ -1504,49 +1249,6 @@
       <div class="facility-badge">📷 Photo Gallery →</div>
       <div class="photo-placeholder-note">[ Clubhouse & antenna farm photos here ]</div>
     </div>
-  </div>
-</section>
- 
-<div class="divider"></div>
- 
-<!-- BAND CONDITIONS -->
-<section id="conditions">
-  <div class="section-label">HF Propagation</div>
-  <h2 class="section-title">Live Band Conditions</h2>
-  <p class="section-sub">Real-time solar indices and HF band conditions for Central Florida. Data sourced from hamqsl.com.</p>
- 
-  <div class="solar-indices reveal" id="solarIndices">
-    <div class="solar-card" id="card-sfi">
-      <div class="solar-card-value" id="val-sfi">—</div>
-      <div class="solar-card-label">Solar Flux</div>
-      <div class="solar-card-desc">SFI</div>
-    </div>
-    <div class="solar-card" id="card-sn">
-      <div class="solar-card-value" id="val-sn">—</div>
-      <div class="solar-card-label">Sunspot No.</div>
-      <div class="solar-card-desc">SN</div>
-    </div>
-    <div class="solar-card" id="card-aindex">
-      <div class="solar-card-value" id="val-aindex">—</div>
-      <div class="solar-card-label">A-Index</div>
-      <div class="solar-card-desc">Geomagnetic</div>
-    </div>
-    <div class="solar-card" id="card-kindex">
-      <div class="solar-card-value" id="val-kindex">—</div>
-      <div class="solar-card-label">K-Index</div>
-      <div class="solar-card-desc">Current</div>
-    </div>
-  </div>
- 
-  <div class="conditions-widget reveal">
-    <div class="conditions-header">
-      <span class="conditions-title">HF Band Status</span>
-      <span class="conditions-live"><span class="live-dot"></span><span id="conditions-updated">Loading...</span></span>
-    </div>
-    <div class="bands-grid" id="bandsGrid">
-      <!-- populated by JS -->
-    </div>
-    <div class="conditions-note" id="conditionsNote">Fetching live data from hamqsl.com...</div>
   </div>
 </section>
  
@@ -1809,8 +1511,8 @@
   <h2 class="section-title">Become a Member of LARA</h2>
   <p class="cta-sub">Whether you're a newly licensed Technician or a seasoned Extra class operator, LARA has a place for you. Your membership supports a community 73 years in the making.</p>
   <div class="cta-btns">
-    <a href="#" class="btn-primary" onclick="openModal('modalApply'); return false;">Apply for Membership</a>
-    <a href="#" class="btn-outline" onclick="openModal('modalDues'); return false;">Pay Dues Online</a>
+    <a href="#" class="btn-primary">Apply for Membership</a>
+    <a href="#" class="btn-outline">Pay Dues Online</a>
   </div>
   <div class="membership-tiers">
     <div class="tier">
@@ -1829,6 +1531,7 @@
       <div class="tier-feature">All annual member benefits</div>
       <div class="tier-feature">Recognition at club events</div>
     </div>
+    
   </div>
 </section>
  
@@ -1881,141 +1584,6 @@
 </footer>
  
  
-<!-- APPLY FOR MEMBERSHIP MODAL -->
-<div class="modal-overlay" id="modalApply">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalApply')" aria-label="Close">×</button>
-    <div class="modal-eyebrow">Membership Application</div>
-    <div class="modal-title">Join LARA</div>
-    <div id="applyTierBadge" class="modal-tier-badge">
-      <span class="tier-badge-name">Annual Member</span>
-      <span class="tier-badge-price">$75 / year</span>
-    </div>
-    <div class="modal-divider"></div>
-    <div class="modal-form-body" id="applyFormBody">
-      <div class="form-row-half">
-        <div class="form-row">
-          <label>First Name</label>
-          <input type="text" placeholder="John" />
-        </div>
-        <div class="form-row">
-          <label>Last Name</label>
-          <input type="text" placeholder="Smith" />
-        </div>
-      </div>
-      <div class="form-row">
-        <label>Email Address</label>
-        <input type="email" placeholder="you@email.com" />
-      </div>
-      <div class="form-row">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="(407) 555-0100" />
-      </div>
-      <div class="form-row-half">
-        <div class="form-row">
-          <label>Callsign <span style="font-weight:300;text-transform:none;letter-spacing:0">(if licensed)</span></label>
-          <input type="text" placeholder="W4XYZ" />
-          <div class="form-hint">Leave blank if not yet licensed</div>
-        </div>
-        <div class="form-row">
-          <label>License Class</label>
-          <select>
-            <option value="">Select one</option>
-            <option>Not yet licensed</option>
-            <option>Technician</option>
-            <option>General</option>
-            <option>Amateur Extra</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <label>Membership Type</label>
-        <select id="applyMemberType" onchange="updateTierBadge(this.value)">
-          <option value="annual">Annual — $75/year</option>
-          <option value="life">Life Member — $800 one-time</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>How did you hear about LARA?</label>
-        <select>
-          <option value="">Select one</option>
-          <option>Friend or fellow ham</option>
-          <option>ARRL / club directory</option>
-          <option>Social media</option>
-          <option>Repeater / on the air</option>
-          <option>Web search</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Anything you'd like us to know?</label>
-        <textarea placeholder="Interests, experience, questions…"></textarea>
-      </div>
-      <button class="modal-submit" onclick="submitForm('applyFormBody', 'applySuccess')">Submit Application →</button>
-    </div>
-    <div class="modal-success" id="applySuccess">
-      <div class="success-icon">📡</div>
-      <h3>Application Received!</h3>
-      <p>Thanks for applying to join LARA. A club officer will be in touch within a few days to confirm your membership and arrange dues payment. 73!</p>
-    </div>
-  </div>
-</div>
- 
-<!-- PAY DUES MODAL -->
-<div class="modal-overlay" id="modalDues">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalDues')" aria-label="Close">×</button>
-    <div class="modal-eyebrow">Dues Renewal</div>
-    <div class="modal-title">Pay Your Dues</div>
-    <div class="modal-divider"></div>
-    <div class="modal-form-body" id="duesFormBody">
-      <div class="form-row-half">
-        <div class="form-row">
-          <label>First Name</label>
-          <input type="text" placeholder="John" />
-        </div>
-        <div class="form-row">
-          <label>Last Name</label>
-          <input type="text" placeholder="Smith" />
-        </div>
-      </div>
-      <div class="form-row">
-        <label>Callsign</label>
-        <input type="text" placeholder="W4XYZ" />
-      </div>
-      <div class="form-row">
-        <label>Email Address</label>
-        <input type="email" placeholder="you@email.com" />
-      </div>
-      <div class="form-row">
-        <label>Membership Type</label>
-        <select>
-          <option value="annual">Annual Renewal — $75</option>
-          <option value="life">Upgrade to Life Member — $800</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Payment Method</label>
-        <select>
-          <option>Pay at next meeting (cash or check)</option>
-          <option>PayPal / Venmo (instructions will be emailed)</option>
-          <option>Mail a check</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label>
-        <textarea placeholder="Any questions or comments for the treasurer…"></textarea>
-      </div>
-      <button class="modal-submit" onclick="submitForm('duesFormBody', 'duesSuccess')">Submit →</button>
-    </div>
-    <div class="modal-success" id="duesSuccess">
-      <div class="success-icon">✅</div>
-      <h3>Got It!</h3>
-      <p>Your dues request has been received. The club treasurer will follow up with payment instructions. See you at the next meeting!</p>
-    </div>
-  </div>
-</div>
- 
 <script>
   // Offset hero so it clears the fixed topbar + nav
   function setHeroOffset() {
@@ -2054,161 +1622,7 @@
     }
   });
  
-  // Modal open/close
-  function openModal(id) {
-    document.getElementById(id).classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  // Close on overlay click
-  document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) closeModal(overlay.id);
-    });
-  });
-  // Close on Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.open').forEach(function(m) {
-        closeModal(m.id);
-      });
-    }
-  });
- 
-  // Update tier badge when membership type changes
-  function updateTierBadge(val) {
-    var badge = document.getElementById('applyTierBadge');
-    if (val === 'life') {
-      badge.innerHTML = '<span class="tier-badge-name">Life Member</span><span class="tier-badge-price">$800 one-time</span>';
-    } else {
-      badge.innerHTML = '<span class="tier-badge-name">Annual Member</span><span class="tier-badge-price">$75 / year</span>';
-    }
-  }
- 
-  // Form submit → show success
-  function submitForm(formId, successId) {
-    document.getElementById(formId).style.display = 'none';
-    document.getElementById(successId).classList.add('show');
-  }
- 
-  // ── LIVE BAND CONDITIONS ──
-  const BANDS = [
-    { key: 'meter80',  label: '80m' },
-    { key: 'meter40',  label: '40m' },
-    { key: 'meter30',  label: '30m' },
-    { key: 'meter20',  label: '20m' },
-    { key: 'meter17',  label: '17m' },
-    { key: 'meter15',  label: '15m' },
-    { key: 'meter12',  label: '12m' },
-    { key: 'meter10',  label: '10m' },
-    { key: 'meter6',   label: '6m'  },
-  ];
- 
-  function statusClass(val) {
-    if (!val) return 'status-closed';
-    const v = val.toLowerCase();
-    if (v === 'good' || v === 'excellent') return 'status-good';
-    if (v === 'fair')   return 'status-fair';
-    if (v === 'poor')   return 'status-poor';
-    return 'status-closed';
-  }
- 
-  function kIndexClass(k) {
-    const n = parseInt(k);
-    if (n <= 2) return 'good';
-    if (n <= 4) return 'warn';
-    return 'bad';
-  }
- 
-  function aIndexClass(a) {
-    const n = parseInt(a);
-    if (n <= 7)  return 'good';
-    if (n <= 20) return 'warn';
-    return 'bad';
-  }
- 
-  function renderFallback() {
-    const grid = document.getElementById('bandsGrid');
-    const fallback = [
-      { label:'80m', status:'Fair' }, { label:'40m', status:'Good' },
-      { label:'30m', status:'Good' }, { label:'20m', status:'Excellent' },
-      { label:'17m', status:'Fair' }, { label:'15m', status:'Fair' },
-      { label:'12m', status:'Poor' }, { label:'10m', status:'Poor' },
-      { label:'6m',  status:'Closed' },
-    ];
-    grid.innerHTML = fallback.map(function(b) {
-      return '<div class="band-cell"><div class="band-name">'+b.label+'</div>'+
-             '<div class="band-status '+statusClass(b.status)+'">'+b.status+'</div></div>';
-    }).join('');
-    document.getElementById('conditionsNote').textContent =
-      'Live data unavailable — showing typical daytime conditions. Refresh to retry.';
-    document.getElementById('conditions-updated').textContent = 'Fallback data';
-    ['sfi','sn','aindex','kindex'].forEach(function(id) {
-      document.getElementById('val-'+id).textContent = '—';
-    });
-  }
- 
-  async function fetchBandConditions() {
-    try {
-      const proxy = 'https://corsproxy.io/?';
-      const url = 'https://www.hamqsl.com/solarxml.php';
-      const res = await fetch(proxy + encodeURIComponent(url));
-      if (!res.ok) throw new Error('fetch failed');
-      const text = await res.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(text, 'text/xml');
- 
-      const get = function(tag) {
-        const el = xml.querySelector(tag);
-        return el ? el.textContent.trim() : '—';
-      };
- 
-      const sfi    = get('solarflux');
-      const sn     = get('sunspots');
-      const aindex = get('aindex');
-      const kindex = get('kindex');
-      const updated = get('updated');
- 
-      document.getElementById('val-sfi').textContent    = sfi;
-      document.getElementById('val-sn').textContent     = sn;
-      document.getElementById('val-aindex').textContent = aindex;
-      document.getElementById('val-kindex').textContent = kindex;
- 
-      document.getElementById('card-kindex').className =
-        'solar-card ' + kIndexClass(kindex);
-      document.getElementById('card-aindex').className =
-        'solar-card ' + aIndexClass(aindex);
- 
-      const grid = document.getElementById('bandsGrid');
-      const bandEls = BANDS.map(function(b) {
-        const dayEl   = xml.querySelector('band[name="'+b.key+'"] > day');
-        const nightEl = xml.querySelector('band[name="'+b.key+'"] > night');
-        const day   = dayEl   ? dayEl.textContent.trim()   : '—';
-        const night = nightEl ? nightEl.textContent.trim() : '—';
-        const display = day !== '—' ? day : night;
-        return '<div class="band-cell">'+
-          '<div class="band-name">'+b.label+'</div>'+
-          '<div class="band-status '+statusClass(display)+'">'+display+'</div>'+
-        '</div>';
-      }).join('');
-      grid.innerHTML = bandEls;
- 
-      document.getElementById('conditions-updated').textContent =
-        'Updated ' + (updated || 'recently');
-      document.getElementById('conditionsNote').textContent =
-        'SFI: '+sfi+' · SN: '+sn+' · A-Index: '+aindex+' · K-Index: '+kindex+
-        ' · Source: hamqsl.com / N0NBH';
- 
-    } catch(e) {
-      renderFallback();
-    }
-  }
- 
-  fetchBandConditions();
-  setInterval(fetchBandConditions, 5 * 60 * 1000);
+  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
