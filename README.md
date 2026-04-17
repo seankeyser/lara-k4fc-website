@@ -7,25 +7,7 @@
 
 ## About Me
 
-I'm a front-end developer based in **Central Florida (Orlando area)** with a background that bridges two worlds most developers never enter: clinical healthcare operations and emergency communications.
-
 Before transitioning into software development, I spent years working in high-stakes environments where clear communication, fast decision-making, and reliable systems weren't just nice to have — they were life-critical. That operational experience shapes how I build: with the end user's real-world workflow in mind, not just the spec.
-
-### Professional Background
-
-- **Communications Specialist — University of Pennsylvania Hospital (Penn Medicine)**  
-  Coordinated inpatient transfers across air and ground transport, managing real-time logistics between facilities, flight crews, ground units, and clinical teams. Operated in a fast-paced, high-acuity environment where information accuracy and speed directly impacted patient outcomes.
-
-- **Emergency Medical Technician (EMT) — Pennsylvania**  
-  Certified and practiced EMT with hands-on experience in pre-hospital emergency care. Trained in rapid assessment, patient stabilization, and emergency communications protocols.
-
-- **Fire Police — Pennsylvania**  
-  Served in a public safety capacity managing traffic control and scene safety at emergency incidents, working alongside fire, EMS, and law enforcement agencies.
-
-- **Amateur Radio Operator — General Class (K4FC)**  
-  Licensed General Class operator and active member of the Lake Amateur Radio Association (LARA). Involved in ARES/RACES emergency communications operations serving Lake County, Florida.
-
----
 
 ## Skills
 
