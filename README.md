@@ -9,7 +9,7 @@
 
 Before transitioning into software development, I spent years working in high-stakes environments where clear communication, fast decision-making, and reliable systems weren't just nice to have — they were life-critical. That operational experience shapes how I build: with the end user's real-world workflow in mind, not just the spec.
 
-## Skills
+---
 
 ### Languages & Technologies
 
@@ -76,11 +76,11 @@ A healthcare dashboard application built on my direct experience coordinating in
 
 | Credential | Institution | Status |
 |-----------|-------------|--------|
-| A.S. Software Application Development | — | Completed |
+| A.S. Software Application Development | — | Completed (2025) |
 | A.S. Computer Technology / Web Design | — | Completed (2022) |
 | Meta Front-End Developer Certificate | Coursera | In Progress |
 | HL7 FHIR Fundamentals | HL7 International | Planned |
-| General Class Amateur Radio License | FCC / ARRL | Active (K4FC) |
+| General Class Amateur Radio License | FCC / ARRL | Active (KQ4SRN) |
 
 ---
 
@@ -111,8 +111,8 @@ My background in clinical operations (Penn Medicine transport), emergency servic
 ## Contact
 
 - **GitHub:** [github.com/seankeyser](https://github.com/seankeyser)
-- **Callsign:** K4FC — Lake Amateur Radio Association, Lake County, FL
-- **Location:** Orlando / Central Florida area
+- **Callsign:** KQ4SRN, Lake County, FL
+- **Location:** Central Florida area
 
 ---
 
