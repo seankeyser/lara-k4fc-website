@@ -1810,7 +1810,7 @@
 <!-- APPLY FOR MEMBERSHIP MODAL -->
 <div class="modal-overlay" id="modalApply">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalApply')" aria-label="Close">×</button>
+    <button class="modal-close" onclick="closeModal('modalApply')" aria-label="Close">&times;</button>
     <div class="modal-eyebrow">Membership Application</div>
     <div class="modal-title">Join LARA</div>
     <div id="applyTierBadge" class="modal-tier-badge">
@@ -1819,36 +1819,33 @@
     </div>
     <div class="modal-divider"></div>
     <div class="modal-form-body" id="applyFormBody">
-      <form id="applyForm">
-      <input type="hidden" name="_subject" value="LARA Membership Application" />
-      <input type="hidden" name="_replyto" value="" />
       <div class="form-row-half">
         <div class="form-row">
           <label>First Name</label>
-          <input type="text" name="first_name" placeholder="John" />
+          <input type="text" id="a_fname" placeholder="John" />
         </div>
         <div class="form-row">
           <label>Last Name</label>
-          <input type="text" name="last_name" placeholder="Smith" />
+          <input type="text" id="a_lname" placeholder="Smith" />
         </div>
       </div>
       <div class="form-row">
         <label>Email Address</label>
-        <input type="email" name="email" placeholder="you@email.com" />
+        <input type="email" id="a_email" placeholder="you@email.com" />
       </div>
       <div class="form-row">
         <label>Phone Number</label>
-        <input type="tel" name="phone" placeholder="(407) 555-0100" />
+        <input type="tel" id="a_phone" placeholder="(407) 555-0100" />
       </div>
       <div class="form-row-half">
         <div class="form-row">
-          <label>Callsign <span style="font-weight:300;text-transform:none;letter-spacing:0">(if licensed)</span></label>
-          <input type="text" name="callsign" placeholder="W4XYZ" />
+          <label>Callsign (if licensed)</label>
+          <input type="text" id="a_call" placeholder="W4XYZ" />
           <div class="form-hint">Leave blank if not yet licensed</div>
         </div>
         <div class="form-row">
           <label>License Class</label>
-          <select name="license_class">
+          <select id="a_class">
             <option value="">Select one</option>
             <option>Not yet licensed</option>
             <option>Technician</option>
@@ -1859,14 +1856,14 @@
       </div>
       <div class="form-row">
         <label>Membership Type</label>
-        <select name="membership_type" id="applyMemberType" onchange="updateTierBadge(this.value)">
-          <option value="Annual — $75/year">Annual — $75/year</option>
-          <option value="Life Member — $800 one-time">Life Member — $800 one-time</option>
+        <select id="applyMemberType" onchange="updateTierBadge(this.value)">
+          <option value="annual">Annual — $75/year</option>
+          <option value="life">Life Member — $800 one-time</option>
         </select>
       </div>
       <div class="form-row">
         <label>How did you hear about LARA?</label>
-        <select name="referral_source">
+        <select id="a_ref">
           <option value="">Select one</option>
           <option>Friend or fellow ham</option>
           <option>ARRL / club directory</option>
@@ -1878,13 +1875,12 @@
       </div>
       <div class="form-row">
         <label>Anything you'd like us to know?</label>
-        <textarea name="message" placeholder="Interests, experience, questions…"></textarea>
+        <textarea id="a_msg" placeholder="Interests, experience, questions..."></textarea>
       </div>
-      <button class="modal-submit" onclick="submitToFormspree('applyForm', 'applyFormBody', 'applySuccess')">Submit Application →</button>
-      </form>
+      <button class="modal-submit" onclick="sendApplyForm()">Submit Application &rarr;</button>
     </div>
     <div class="modal-success" id="applySuccess">
-      <div class="success-icon">📡</div>
+      <div class="success-icon">&#128225;</div>
       <h3>Application Received!</h3>
       <p>Thanks for applying to join LARA. A club officer will be in touch within a few days to confirm your membership and arrange dues payment. 73!</p>
     </div>
@@ -1894,55 +1890,52 @@
 <!-- PAY DUES MODAL -->
 <div class="modal-overlay" id="modalDues">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('modalDues')" aria-label="Close">×</button>
+    <button class="modal-close" onclick="closeModal('modalDues')" aria-label="Close">&times;</button>
     <div class="modal-eyebrow">Dues Renewal</div>
     <div class="modal-title">Pay Your Dues</div>
     <div class="modal-divider"></div>
     <div class="modal-form-body" id="duesFormBody">
-      <form id="duesForm">
-      <input type="hidden" name="_subject" value="LARA Dues Payment Request" />
       <div class="form-row-half">
         <div class="form-row">
           <label>First Name</label>
-          <input type="text" name="first_name" placeholder="John" />
+          <input type="text" id="d_fname" placeholder="John" />
         </div>
         <div class="form-row">
           <label>Last Name</label>
-          <input type="text" name="last_name" placeholder="Smith" />
+          <input type="text" id="d_lname" placeholder="Smith" />
         </div>
       </div>
       <div class="form-row">
         <label>Callsign</label>
-        <input type="text" name="callsign" placeholder="W4XYZ" />
+        <input type="text" id="d_call" placeholder="W4XYZ" />
       </div>
       <div class="form-row">
         <label>Email Address</label>
-        <input type="email" name="email" placeholder="you@email.com" />
+        <input type="email" id="d_email" placeholder="you@email.com" />
       </div>
       <div class="form-row">
         <label>Membership Type</label>
-        <select name="membership_type">
-          <option value="Annual Renewal — $75">Annual Renewal — $75</option>
-          <option value="Upgrade to Life Member — $800">Upgrade to Life Member — $800</option>
+        <select id="d_type">
+          <option>Annual Renewal &mdash; $75</option>
+          <option>Upgrade to Life Member &mdash; $800</option>
         </select>
       </div>
       <div class="form-row">
         <label>Payment Method</label>
-        <select name="payment_method">
+        <select id="d_pay">
           <option>Pay at next meeting (cash or check)</option>
           <option>PayPal / Venmo (instructions will be emailed)</option>
           <option>Mail a check</option>
         </select>
       </div>
       <div class="form-row">
-        <label>Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label>
-        <textarea name="message" placeholder="Any questions or comments for the treasurer…"></textarea>
+        <label>Notes (optional)</label>
+        <textarea id="d_msg" placeholder="Any questions or comments for the treasurer..."></textarea>
       </div>
-      <button class="modal-submit" onclick="submitToFormspree('duesForm', 'duesFormBody', 'duesSuccess')">Submit →</button>
-      </form>
+      <button class="modal-submit" onclick="sendDuesForm()">Submit &rarr;</button>
     </div>
     <div class="modal-success" id="duesSuccess">
-      <div class="success-icon">✅</div>
+      <div class="success-icon">&#9989;</div>
       <h3>Got It!</h3>
       <p>Your dues request has been received. The club treasurer will follow up with payment instructions. See you at the next meeting!</p>
     </div>
@@ -2021,45 +2014,74 @@
     }
   }
 
-  // Form submit → Formspree
-  async function submitToFormspree(formId, bodyId, successId) {
-    var form = document.getElementById(formId);
-    var btn = form.querySelector('.modal-submit');
-    var originalText = btn.textContent;
+  // ── FORM SUBMISSIONS ──
+  var FORMSPREE = 'https://formspree.io/f/xvzdavqw';
 
-    // Basic validation — check required fields
-    var email = form.querySelector('input[type="email"]');
-    if (email && !email.value.trim()) {
-      email.style.borderColor = 'var(--red)';
-      email.focus();
-      return;
-    }
-
-    btn.textContent = 'Sending…';
+  function sendApplyForm() {
+    var email = document.getElementById('a_email').value.trim();
+    if (!email) { alert('Please enter your email address.'); return; }
+    var btn = document.querySelector('#applyFormBody .modal-submit');
+    btn.textContent = 'Sending\u2026';
     btn.disabled = true;
-
-    try {
-      var data = new FormData(form);
-      var res = await fetch('https://formspree.io/f/xvzdavqw', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (res.ok) {
-        document.getElementById(bodyId).style.display = 'none';
-        document.getElementById(successId).classList.add('show');
-      } else {
-        btn.textContent = 'Error — try again';
+    var data = new FormData();
+    data.append('_subject', 'LARA Membership Application');
+    data.append('first_name', document.getElementById('a_fname').value);
+    data.append('last_name',  document.getElementById('a_lname').value);
+    data.append('email',      email);
+    data.append('phone',      document.getElementById('a_phone').value);
+    data.append('callsign',   document.getElementById('a_call').value);
+    data.append('license_class', document.getElementById('a_class').value);
+    data.append('membership_type', document.getElementById('applyMemberType').value);
+    data.append('referral',   document.getElementById('a_ref').value);
+    data.append('message',    document.getElementById('a_msg').value);
+    fetch(FORMSPREE, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+      .then(function(r) {
+        if (r.ok) {
+          document.getElementById('applyFormBody').style.display = 'none';
+          document.getElementById('applySuccess').classList.add('show');
+        } else {
+          btn.textContent = 'Error \u2014 try again';
+          btn.disabled = false;
+        }
+      })
+      .catch(function() {
+        btn.textContent = 'Error \u2014 try again';
         btn.disabled = false;
-      }
-    } catch(err) {
-      btn.textContent = 'Error — try again';
-      btn.disabled = false;
-    }
+      });
   }
 
-  // Legacy fallback (kept for safety)
+  function sendDuesForm() {
+    var email = document.getElementById('d_email').value.trim();
+    if (!email) { alert('Please enter your email address.'); return; }
+    var btn = document.querySelector('#duesFormBody .modal-submit');
+    btn.textContent = 'Sending\u2026';
+    btn.disabled = true;
+    var data = new FormData();
+    data.append('_subject', 'LARA Dues Payment Request');
+    data.append('first_name', document.getElementById('d_fname').value);
+    data.append('last_name',  document.getElementById('d_lname').value);
+    data.append('callsign',   document.getElementById('d_call').value);
+    data.append('email',      email);
+    data.append('membership_type', document.getElementById('d_type').value);
+    data.append('payment_method',  document.getElementById('d_pay').value);
+    data.append('message',    document.getElementById('d_msg').value);
+    fetch(FORMSPREE, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+      .then(function(r) {
+        if (r.ok) {
+          document.getElementById('duesFormBody').style.display = 'none';
+          document.getElementById('duesSuccess').classList.add('show');
+        } else {
+          btn.textContent = 'Error \u2014 try again';
+          btn.disabled = false;
+        }
+      })
+      .catch(function() {
+        btn.textContent = 'Error \u2014 try again';
+        btn.disabled = false;
+      });
+  }
+
+  // Legacy fallback
   function submitForm(formId, successId) {
     document.getElementById(formId).style.display = 'none';
     document.getElementById(successId).classList.add('show');
