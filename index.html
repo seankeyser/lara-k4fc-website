@@ -883,6 +883,7 @@
     position:absolute; inset:0;
     background:
       radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,.07) 0%, transparent 70%);
+    pointer-events:none;
   }
   .membership-cta .section-label { justify-content:center; }
   .membership-cta .section-label::before { display:none; }
@@ -891,7 +892,7 @@
     font-size:1rem; color:var(--muted); font-weight:300;
     max-width:480px; margin:0 auto 40px; line-height:1.7;
   }
-  .cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; position:relative; z-index:2; }
   .membership-tiers {
     display:grid; grid-template-columns:repeat(2,1fr);
     gap:16px; max-width:500px; margin:48px auto 0;
